@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node --watch --env-file .env index.mjs",
-    "test": "globstar -- node --test \"**/*.test.js\""
+    "test": "globstar -- node --test \"**/*.test.mjs\""
   },
   "keywords": [
     "db",
