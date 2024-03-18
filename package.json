@@ -1,0 +1,21 @@
+{
+  "name": "db",
+  "version": "1.0.0",
+  "description": "Um clone do MySQl feito em NodeJs",
+  "main": "index.js",
+  "scripts": {
+    "start": "node --watch --env-file .env index.mjs",
+    "test": "globstar -- node --test \"**/*.test.js\""
+  },
+  "keywords": [
+    "db",
+    "database",
+    "mysql",
+    "sql"
+  ],
+  "author": "Francisco dos Santos",
+  "license": "ISC",
+  "devDependencies": {
+    "globstar": "^1.0.0"
+  }
+}

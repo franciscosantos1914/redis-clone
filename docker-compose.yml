@@ -1,0 +1,20 @@
+version: "3"
+services:
+  db:
+    container_name: mysql-clone-db
+    init: true
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports: 
+      - 3066:3066
+    volumes: 
+      - mysql-clone-db:/app/data
+    command: [ "npm", "t" ]
+volumes:
+  mysql-clone-db:
+    driver: local
+    driver_opts:
+      type: none
+      device: /data
+      o: bind
