@@ -8,25 +8,30 @@ Tabelas: Armazenam os dados em si, organizados em linhas e colunas.
 Views (Visões): Definições de consultas salvas que aparecem como tabelas virtuais.
 Procedimentos armazenados: Conjuntos de instruções SQL que são armazenadas e executadas no servidor de banco de dados.
 Triggers (Gatilhos): Ações automáticas que ocorrem em resposta a determinados eventos, como inserção, atualização ou exclusão de dados em uma tabela.
+
 Componentes de Processamento:
 
 Parser (Analisador): Analisa as instruções SQL enviadas pelos usuários e converte-as em uma forma que o DBMS possa entender.
 Query Optimizer (Otimizador de Consultas): Determina a melhor maneira de executar uma consulta, levando em consideração fatores como índices disponíveis, estatísticas de tabelas e custos de operações.
 Executor: Executa as instruções SQL otimizadas pelo otimizador de consultas e manipula as operações de leitura/gravação nos dados armazenados.
+
 Componentes de Concorrência e Controle de Transações:
 
 Controle de Concorrência: Garante que várias transações concorrentes possam acessar e modificar os dados de maneira consistente e sem interferência mútua.
 Controle de Transações: Garante a atomicidade, consistência, isolamento e durabilidade (ACID) das transações.
 Bloqueio (Locking): Mecanismo usado para controlar o acesso concorrente aos dados, garantindo que apenas uma transação possa modificar um determinado conjunto de dados por vez.
+
 Componentes de Segurança:
 
 Autenticação e Autorização: Verifica a identidade dos usuários e controla o acesso aos dados com base em permissões definidas.
 Criptografia: Protege os dados em trânsito e em repouso usando técnicas de criptografia.
+
 Componentes de Recuperação e Backup:
 
 Registro de Transações: Registra todas as alterações feitas no banco de dados para facilitar a recuperação em caso de falha.
 Pontos de Verificação (Checkpoints): Momentos em que o estado atual do banco de dados é gravado em disco para facilitar a recuperação após uma falha.
 Recuperação de Transações: Restaura o banco de dados a um estado consistente após uma falha, aplicando as alterações registradas no log de transações.
+
 Cada DBMS pode implementar esses componentes de maneiras diferentes, dependendo de suas características e requisitos específicos. No entanto, esses elementos fornecem uma estrutura básica para entender as internas de um sistema de gerenciamento de banco de dados.
 
 Vamos explorar como cada camada de um sistema de gerenciamento de banco de dados interage com as outras:
