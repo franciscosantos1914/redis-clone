@@ -1,7 +1,7 @@
 version: "3"
 services:
   db:
-    container_name: mysql-clone-db
+    container_name: in-memory-db
     init: true
     build:
       context: .
@@ -9,10 +9,10 @@ services:
     ports: 
       - 3066:3066
     volumes: 
-      - mysql-clone-db:/app/data
+      - in-memory-db:/app/data
     command: [ "npm", "t" ]
 volumes:
-  mysql-clone-db:
+  in-memory-db:
     driver: local
     driver_opts:
       type: none
