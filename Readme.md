@@ -1,9 +1,11 @@
+ ![Redis Logo](https://www.dragonflydb.io/assets/guides/redis-gui/cover.png)
+
 ## 🚀 User Story
 Como um desenvolvedor, eu quero criar um clone da base de dados Redis para que eu possa usar funcionalidades semelhantes ao Redis em meus projetos Node.js.
 
 ### 1. 📝 Planejamento e Requisitos
 - **Tarefa:** Definir os requisitos e funcionalidades básicas que o clone deve ter.
-  - **Sub-tarefa:** Listar as principais funcionalidades do Redis que serão implementadas ![Redis Logo](https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Redis_Logo.svg/200px-Redis_Logo.svg.png).
+  - **Sub-tarefa:** Listar as principais funcionalidades do Redis que serão implementadas.
   - **Sub-tarefa:** Definir os requisitos de desempenho e escalabilidade.
 
 ### 2. ⚙️ Configuração do Ambiente de Desenvolvimento
