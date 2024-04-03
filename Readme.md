@@ -1,71 +1,55 @@
-Um sistema de gerenciamento de banco de dados é uma camada de software que gerencia e organiza dados em um ambiente computacional. Ele fornece uma interface entre os usuários e os dados armazenados, permitindo que os usuários executem operações como adicionar, modificar, excluir e recuperar dados de maneira eficiente e segura. Aqui está uma visão geral das principais componentes e funcionalidades de um DBMS:
+## 🚀 User Story
+Como um desenvolvedor, eu quero criar um clone da base de dados Redis para que eu possa usar funcionalidades semelhantes ao Redis em meus projetos Node.js.
 
-Componentes de Armazenamento:
+### 1. 📝 Planejamento e Requisitos
+- **Tarefa:** Definir os requisitos e funcionalidades básicas que o clone deve ter.
+  - **Sub-tarefa:** Listar as principais funcionalidades do Redis que serão implementadas ![Redis Logo](https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Redis_Logo.svg/200px-Redis_Logo.svg.png).
+  - **Sub-tarefa:** Definir os requisitos de desempenho e escalabilidade.
 
-Catálogo do Sistema: Armazena metadados sobre os objetos do banco de dados, como tabelas, índices, restrições, procedimentos armazenados, etc.
-Tabelas: Armazenam os dados em si, organizados em linhas e colunas.
-Índices: Estruturas de dados auxiliares que aceleram a recuperação de dados, permitindo acesso rápido com base em certos critérios.
-Views (Visões): Definições de consultas salvas que aparecem como tabelas virtuais.
-Procedimentos armazenados: Conjuntos de instruções SQL que são armazenadas e executadas no servidor de banco de dados.
-Triggers (Gatilhos): Ações automáticas que ocorrem em resposta a determinados eventos, como inserção, atualização ou exclusão de dados em uma tabela.
+### 2. ⚙️ Configuração do Ambiente de Desenvolvimento
+- **Tarefa:** Configurar o ambiente de desenvolvimento Node.js.
+  - **Sub-tarefa:** Instalar Node.js e npm ![Node.js Logo](https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Node.js_logo.svg/200px-Node.js_logo.svg.png).
+  - **Sub-tarefa:** Configurar um editor de código (ex: Visual Studio Code).
 
-Componentes de Processamento:
+### 3. 🏗️ Estrutura do Projeto
+- **Tarefa:** Definir a estrutura do projeto.
+  - **Sub-tarefa:** Criar a estrutura de diretórios para o projeto.
+  - **Sub-tarefa:** Configurar o `package.json` e instalar dependências necessárias.
 
-Parser (Analisador): Analisa as instruções SQL enviadas pelos usuários e converte-as em uma forma que o DBMS possa entender.
-Query Optimizer (Otimizador de Consultas): Determina a melhor maneira de executar uma consulta, levando em consideração fatores como índices disponíveis, estatísticas de tabelas e custos de operações.
-Executor: Executa as instruções SQL otimizadas pelo otimizador de consultas e manipula as operações de leitura/gravação nos dados armazenados.
+### 4. 🛠️ Implementação de Funcionalidades
+- **Tarefa:** Implementar as funcionalidades básicas do Redis.
+  - **Sub-tarefa:** Implementar o armazenamento de strings.
+  - **Sub-tarefa:** Implementar listas.
+  - **Sub-tarefa:** Implementar conjuntos.
+  - **Sub-tarefa:** Implementar hashes.
+  - **Sub-tarefa:** Implementar operações de expiração de chaves.
 
-Componentes de Concorrência e Controle de Transações:
+### 5. 📂 Persistência de Dados
+- **Tarefa:** Implementar a persistência de dados.
+  - **Sub-tarefa:** Escolher um mecanismo de armazenamento (ex: arquivos, banco de dados SQL, etc.).
+  - **Sub-tarefa:** Implementar a lógica de leitura e escrita de dados.
 
-Controle de Concorrência: Garante que várias transações concorrentes possam acessar e modificar os dados de maneira consistente e sem interferência mútua.
-Controle de Transações: Garante a atomicidade, consistência, isolamento e durabilidade (ACID) das transações.
-Bloqueio (Locking): Mecanismo usado para controlar o acesso concorrente aos dados, garantindo que apenas uma transação possa modificar um determinado conjunto de dados por vez.
+### 6. 🧪 Testes
+- **Tarefa:** Desenvolver e executar testes unitários e de integração.
+  - **Sub-tarefa:** Escrever testes para as funcionalidades implementadas.
+  - **Sub-tarefa:** Utilizar frameworks de teste como Jest ou Mocha.
 
-Componentes de Segurança:
+### 7. 📚 Documentação
+- **Tarefa:** Documentar a API e como usar o clone do Redis.
+  - **Sub-tarefa:** Escrever documentação para cada funcionalidade.
+  - **Sub-tarefa:** Criar exemplos de uso.
 
-Autenticação e Autorização: Verifica a identidade dos usuários e controla o acesso aos dados com base em permissões definidas.
-Criptografia: Protege os dados em trânsito e em repouso usando técnicas de criptografia.
+### 8. ⚡ Performance e Escalabilidade
+- **Tarefa:** Avaliar e melhorar a performance e escalabilidade.
+  - **Sub-tarefa:** Realizar benchmarks e testes de carga.
+  - **Sub-tarefa:** Identificar e corrigir gargalos.
 
-Componentes de Recuperação e Backup:
+### 9. 🎯 Implementação de Recursos Avançados
+- **Tarefa:** Implementar recursos avançados do Redis.
+  - **Sub-tarefa:** Implementar transações.
+  - **Sub-tarefa:** Implementar pub/sub.
 
-Registro de Transações: Registra todas as alterações feitas no banco de dados para facilitar a recuperação em caso de falha.
-Pontos de Verificação (Checkpoints): Momentos em que o estado atual do banco de dados é gravado em disco para facilitar a recuperação após uma falha.
-Recuperação de Transações: Restaura o banco de dados a um estado consistente após uma falha, aplicando as alterações registradas no log de transações.
-
-Cada DBMS pode implementar esses componentes de maneiras diferentes, dependendo de suas características e requisitos específicos. No entanto, esses elementos fornecem uma estrutura básica para entender as internas de um sistema de gerenciamento de banco de dados.
-
-Vamos explorar como cada camada de um sistema de gerenciamento de banco de dados interage com as outras:
-
-Camada de Aplicação:
-
-Interage principalmente com a camada de Processamento.
-Os aplicativos enviam consultas SQL para a camada de Processamento para que sejam analisadas e executadas.
-Os resultados das consultas são retornados à camada de Aplicação para serem apresentados aos usuários ou processados posteriormente.
-Camada de Processamento:
-
-Recebe consultas SQL da camada de Aplicação e passa por várias etapas de processamento.
-O Parser analisa a sintaxe das consultas e as converte em uma forma que o DBMS possa entender.
-O Otimizador de Consultas determina o melhor plano de execução para as consultas, considerando índices disponíveis, estatísticas de tabelas e custos de operações.
-O Executor executa as consultas otimizadas, manipulando as operações de leitura/gravação nos dados armazenados.
-Os resultados das consultas são enviados de volta à camada de Aplicação.
-Camada de Armazenamento:
-
-Armazena e gerencia os dados do banco de dados, bem como os metadados do sistema.
-Interage com a camada de Processamento para receber solicitações de leitura/gravação de dados.
-Fornece acesso eficiente aos dados, utilizando índices e estratégias de armazenamento otimizadas.
-Realiza operações de leitura/gravação nos dados conforme solicitado pela camada de Processamento.
-Pode fornecer mecanismos de controle de concorrência para garantir acesso seguro e consistente aos dados.
-Camada de Concorrência e Controle de Transações:
-
-Interage principalmente com a camada de Armazenamento.
-Gerencia a execução simultânea de múltiplas transações, garantindo a consistência dos dados.
-Utiliza técnicas como bloqueio (locking) para controlar o acesso concorrente aos dados e evitar problemas como leitura suja, leitura não repetível e escrita fantasma.
-Garante que as transações sejam executadas de acordo com as propriedades ACID (Atomicidade, Consistência, Isolamento e Durabilidade).
-Pode coordenar a sincronização de transações distribuídas em sistemas de banco de dados distribuídos.
-Camada de Segurança:
-
-Interage com todas as outras camadas.
-Autentica usuários e controla o acesso aos dados com base em permissões definidas.
-Protege os dados em trânsito e em repouso usando técnicas de criptografia.
-Garante que as políticas de segurança sejam aplicadas em todos os níveis do sistema de banco de dados.
-Essas interações são essenciais para garantir o funcionamento eficiente e seguro de um sistema de gerenciamento de banco de dados, permitindo que os usuários acessem e manipulem os dados de maneira confiável e consistente.
+### 10. 🚀 Deploy e Monitoramento
+- **Tarefa:** Preparar o clone para produção.
+  - **Sub-tarefa:** Configurar o deploy do projeto.
+  - **Sub-tarefa:** Implementar monitoramento e logging.
