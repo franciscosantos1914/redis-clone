@@ -17,7 +17,7 @@ export class Queue {
     this.#data = []
   }
 
-  size() {
+  get size() {
     return this.#data.length
   }
 }
