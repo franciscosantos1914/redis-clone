@@ -1,6 +1,6 @@
 version: "3"
 services:
-  db:
+  in-memory-db:
     container_name: in-memory-db
     init: true
     build:

@@ -12,13 +12,13 @@
 
 	// The 'service' property is the name of the service for the container that VS Code should
 	// use. Update this value and .devcontainer/docker-compose.yml to the real service name.
-	"service": "db",
+	"service": "in-memory-db",
 
 	// The optional 'workspaceFolder' property is the path VS Code should open by default when
 	// connected. This is typically a file mount in .devcontainer/docker-compose.yml
 	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
 	"features": {
-		//"ghcr.io/devcontainers/features/github-cli:1": {}
+		"ghcr.io/cirolosapio/devcontainers-features/alpine-git:0": {}
 	}
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
