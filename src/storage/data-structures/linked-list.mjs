@@ -1,8 +1,4 @@
 class Node {
-  next;
-  value;
-  previous;
-
   constructor(previous, value, next) {
     this.next = next;
     this.value = value;
@@ -37,36 +33,58 @@ export class LinkedList {
     this.#head = this.#head || newNode
   }
 
+  insert(newValue, oldValue) {
+    if (this.#head.value == oldValue) {
+      this.#head.value = newValue
+      return
+    }
+    if (this.#tail.value == oldValue) {
+      this.#tail.value = newValue
+      return
+    }
+    const element = this.find(oldValue)
+    if (!element) return
+    element.value = newValue
+  }
+
   find(item) {
     let current = this.#head
     while (current) {
-      if (current.data == item) return current
+      if (current.value == item) return current
       current = current.next
     }
     return null
   }
 
-  insert(newData, item) {
-    const nextElement = this.find(item)
-    if (!nextElement) return
-    const newNode = new Node(nextElement?.previous, newData, nextElement)
-    nextElement.previous.next = newNode
-    nextElement.previous = newNode
-  }
-
   remove(item) {
+
+    if (this.#head.value == item) {
+      const next = this.#head.next
+      next.previous = null
+      this.#head = next
+      return
+    }
+
+    if (this.#tail.value == item) {
+      const previous = this.#tail.previous
+      previous.next = null
+      this.#tail = previous
+      return
+    }
+
     const element = this.find(item);
     if (!element) return;
-    if (element.prev) element.prev.next = element.next;
-    if (element.next) element.next.prev = element.prev;
+
+    if (element.previous) element.previous.next = element.next;
+    if (element.next) element.next.previous = element.previous;
     element.next = null
-    element.prev = null
+    element.previous = null
   }
 
   forEach(callbackfn) {
     let currentNode = this.#head;
     while (currentNode) {
-      callbackfn(currentNode.data)
+      callbackfn(currentNode.value)
       currentNode = currentNode.next;
     }
   }
