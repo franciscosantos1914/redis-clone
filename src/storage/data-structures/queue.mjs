@@ -1,23 +1,27 @@
+import { LinkedList } from './linked-list.mjs'
+
 export class Queue {
-  #data
+  #list
 
   constructor() {
-    this.#data = []
+    this.#list = new LinkedList()
   }
 
   enqueue(value) {
-    this.#data.push(value)
+    this.#list.append(value)
   }
 
   dequeue() {
-    return this.#data.shift()
+    const first = this.#list.head?.value
+    this.#list.remove(first)
+    return first
   }
 
   clear() {
-    this.#data = []
+    this.#list = new LinkedList()
   }
 
   get size() {
-    return this.#data.length
+    return this.#list.size
   }
 }

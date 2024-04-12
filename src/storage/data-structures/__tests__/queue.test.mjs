@@ -1,7 +1,7 @@
 import { Queue } from "../queue.mjs"
 
 describe("Queue Tests", () => {
-    it("should create an empty storage", () => {
+    it("should create an empty queue", () => {
         const queue = new Queue()
         expect(queue.size).toBe(0)
     })

@@ -7,39 +7,39 @@ class Node {
 }
 
 export class LinkedList {
-  #head;
-  #tail;
-
   constructor() {
-    this.#head = null
-    this.#tail = null
+    this.size = 0
+    this.head = null
+    this.tail = null
   }
 
   prepend(value) {
-    const newNode = new Node(null, value, this.#head)
-    if (this.#head) {
-      this.#head.previous = newNode
+    const newNode = new Node(null, value, this.head)
+    if (this.head) {
+      this.head.previous = newNode
     }
-    this.#head = newNode
-    this.#tail = this.#tail || newNode
+    this.head = newNode
+    this.tail = this.tail || newNode
+    this.size++
   }
 
   append(value) {
-    const newNode = new Node(this.#tail, value, null)
-    if (this.#tail) {
-      this.#tail.next = newNode
+    const newNode = new Node(this.tail, value, null)
+    if (this.tail) {
+      this.tail.next = newNode
     }
-    this.#tail = newNode
-    this.#head = this.#head || newNode
+    this.tail = newNode
+    this.head = this.head || newNode
+    this.size++
   }
 
   insert(newValue, oldValue) {
-    if (this.#head.value == oldValue) {
-      this.#head.value = newValue
+    if (this.head.value == oldValue) {
+      this.head.value = newValue
       return
     }
-    if (this.#tail.value == oldValue) {
-      this.#tail.value = newValue
+    if (this.tail.value == oldValue) {
+      this.tail.value = newValue
       return
     }
     const element = this.find(oldValue)
@@ -48,7 +48,7 @@ export class LinkedList {
   }
 
   find(item) {
-    let current = this.#head
+    let current = this.head
     while (current) {
       if (current.value == item) return current
       current = current.next
@@ -58,17 +58,19 @@ export class LinkedList {
 
   remove(item) {
 
-    if (this.#head.value == item) {
-      const next = this.#head.next
+    if (this.head?.value == item) {
+      const next = this.head?.next
       next.previous = null
-      this.#head = next
+      this.head = next
+      this.size--
       return
     }
 
-    if (this.#tail.value == item) {
-      const previous = this.#tail.previous
+    if (this.tail?.value == item) {
+      const previous = this.tail?.previous
       previous.next = null
-      this.#tail = previous
+      this.tail = previous
+      this.size--
       return
     }
 
@@ -79,10 +81,12 @@ export class LinkedList {
     if (element.next) element.next.previous = element.previous;
     element.next = null
     element.previous = null
+
+    this.size--
   }
 
   forEach(callbackfn) {
-    let currentNode = this.#head;
+    let currentNode = this.head;
     while (currentNode) {
       callbackfn(currentNode.value)
       currentNode = currentNode.next;
