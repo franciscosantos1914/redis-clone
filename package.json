@@ -25,5 +25,8 @@
     "globals": "^15.0.0",
     "globstar": "^1.0.0",
     "jest": "^29.7.0"
+  },
+  "dependencies": {
+    "murmurhash": "^2.0.1"
   }
 }
