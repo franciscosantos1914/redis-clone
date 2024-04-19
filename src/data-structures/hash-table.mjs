@@ -1,6 +1,9 @@
 import AVLTree from 'avl'
 import murmurhash from 'murmurhash'
 
+const kHasValue = Symbol("kHasValue")
+const kSetCleanExpirationTrigger = Symbol("kSetCleanExpirationTrigger")
+
 export class HashTable {
     #table
 
@@ -17,12 +20,12 @@ export class HashTable {
         const timeToLive = isNaN(Number(ttl)) ? Date.now() + 3_600 : Date.now() + Number(ttl)
         this.#table[hashedKey].insert(key, { value, ttl: timeToLive })
 
-        if (timeToLive != Infinity) this.#setCleanExpirationTrigger(key, timeToLive)
+        if (timeToLive != Infinity) this[kSetCleanExpirationTrigger](key, timeToLive)
     }
 
     get(key) {
         const hashedKey = murmurhash.v2(key)
-        if (!this.#hasValue(hashedKey)) return null
+        if (!this[kHasValue](hashedKey)) return null
         const { value, ttl } = this.#table[hashedKey].find(key).data
         if (Date.now() < ttl) return value
         this.remove(key)
@@ -31,16 +34,16 @@ export class HashTable {
 
     has(key) {
         const hashedKey = murmurhash.v2(key)
-        return this.#hasValue(hashedKey) && this.#table[hashedKey].contains(key)
+        return this[kHasValue](hashedKey) && this.#table[hashedKey].contains(key)
     }
 
-    #hasValue(hashedKey) {
+    [kHasValue](hashedKey) {
         return Reflect.has(this.#table, hashedKey) && this.#table[hashedKey] instanceof AVLTree
     }
 
     remove(key) {
         const hashedKey = murmurhash.v2(key)
-        if (!this.#hasValue(hashedKey)) return
+        if (!this[kHasValue](hashedKey)) return
         this.#table[hashedKey].remove(key)
         Reflect.deleteProperty(this.#table, hashedKey)
     }
@@ -54,7 +57,7 @@ export class HashTable {
         for (const key of keys) this.#table[key].forEach(node => callbackfn(node.key, node.data.value))
     }
 
-    #setCleanExpirationTrigger(key, ttl) {
+    [kSetCleanExpirationTrigger](key, ttl) {
         setTimeout(() => { this.remove(key) }, ttl)
     }
 }
