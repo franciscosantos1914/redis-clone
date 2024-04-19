@@ -8,18 +8,25 @@ export class HashTable {
         this.#table = {}
     }
 
-    set(key, value) {
+    set(key, value, ttl = Infinity) {
         const hashedKey = murmurhash.v2(key)
         if (!this.#table[hashedKey] || !Array.isArray(this.#table[hashedKey])) {
             this.#table[hashedKey] = new AVLTree()
         }
-        this.#table[hashedKey].insert(key, value)
+
+        const timeToLive = isNaN(Number(ttl)) ? Date.now() + 3_600 : Date.now() + Number(ttl)
+        this.#table[hashedKey].insert(key, { value, ttl: timeToLive })
+
+        if (timeToLive != Infinity) this.#setCleanExpirationTrigger(key, timeToLive)
     }
 
     get(key) {
         const hashedKey = murmurhash.v2(key)
         if (!this.#hasValue(hashedKey)) return null
-        return this.#table[hashedKey].find(key).data
+        const { value, ttl } = this.#table[hashedKey].find(key).data
+        if (Date.now() < ttl) return value
+        this.remove(key)
+        return null
     }
 
     has(key) {
@@ -44,6 +51,10 @@ export class HashTable {
 
     forEach(callbackfn) {
         const keys = Object.keys(this.#table)
-        for (const key of keys) this.#table[key]?.forEach(node => callbackfn(node.key, node.data))
+        for (const key of keys) this.#table[key].forEach(node => callbackfn(node.key, node.data.value))
+    }
+
+    #setCleanExpirationTrigger(key, ttl) {
+        setTimeout(() => { this.remove(key) }, ttl)
     }
 }
