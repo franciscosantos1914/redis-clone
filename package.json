@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "avl": "^1.5.3",
+    "lodash": "^4.17.21",
     "murmurhash": "^2.0.1"
   }
 }
