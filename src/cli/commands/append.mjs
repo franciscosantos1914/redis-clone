@@ -1,24 +1,22 @@
 import { Helper } from '../../shareds/helpers.mjs'
 import { Messages } from '../../shareds/messages.mjs'
+import { hashTableStore } from './hash-table-store.mjs'
 import { AppError } from '../../shareds/app-response.mjs'
-import { HashTable } from "../../data-structures/hash-table.mjs"
-
-const hashTableInstance = new HashTable()
 
 function appendCommand(key, value) {
 
     if (Helper.isString(value) === false) {
-        return new AppError(Messages.Error.APPEND_STR_ERROR_INVALID_VALUE)
+        return new AppError(Messages.Error.APPEND_STR_CMD_ERROR_INVALID_VALUE)
     }
 
-    const exists = hashTableInstance.has(key)
+    const exists = hashTableStore.has(key)
 
     if (exists) {
-        const recorded = hashTableInstance.get(key)
-        hashTableInstance.set(key, `${recorded}${value}`)
+        const recorded = hashTableStore.get(key)
+        hashTableStore.set(key, `${recorded}${value}`)
     } else {
-        hashTableInstance.set(key, value)
+        hashTableStore.set(key, value)
     }
 
-    return hashTableInstance.size()
+    return hashTableStore.size()
 }

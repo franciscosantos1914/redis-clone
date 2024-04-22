@@ -32,6 +32,10 @@ export class HashTable {
         return null
     }
 
+    flushAll() {
+        this.#table = {}
+    }
+
     has(key) {
         const hashedKey = murmurhash.v2(key)
         return this[kHasValue](hashedKey) && this.#table[hashedKey].contains(key)
