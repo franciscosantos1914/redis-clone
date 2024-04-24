@@ -1,6 +1,6 @@
-import { Helper } from '../../shareds/helpers.mjs'
-import { Messages } from '../../shareds/messages.mjs'
-import { AppError } from '../../shareds/app-response.mjs'
+import { Helper } from '../../../shareds/helpers.mjs'
+import { Messages } from '../../../shareds/messages.mjs'
+import { AppError } from '../../../shareds/app-response.mjs'
 
 function authCommand(username, password) {
     if (Helper.isString(username) === false) {

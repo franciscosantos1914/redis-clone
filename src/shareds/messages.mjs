@@ -30,6 +30,7 @@ export const Messages = {
         JSON_GET_CMD_INVALID_DOCUMENT_KEY: "Invalid Document Name. Document Name Must Be String",
         JSON_GET_CMD_INVALID_PATH_KEY: "Invalid Path Name. Path Name Must Be String",
         JSON_GET_CMD_INVALID_KEY: "Invalid Key. Key Must Be String",
+        JSON_DEBUG_MEMORY_CMD_INVALID_DOCUMENT_KEY: "Invalid Document Name. Document Name Must Be String",
     },
     Success: {
 
