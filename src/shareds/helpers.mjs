@@ -28,6 +28,15 @@ function capitalize(value) {
     return _.capitalize(value);
 }
 
+function isValidJSON(str) {
+    try {
+        JSON.parse(str);
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+
 export const Helper = {
     objHas
     , isBoolean
@@ -36,4 +45,5 @@ export const Helper = {
     , isObject
     , isString
     , capitalize
+    , isValidJSON
 }
