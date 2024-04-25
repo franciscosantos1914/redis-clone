@@ -33,13 +33,4 @@ describe("HashTable", () => {
         expect(hashTable.get("test1")).toBe("test1")
         expect(hashTable.has("test1")).toBeTruthy()
     })
-    /*
-    it("should set an item in the table with time to live", () => {
-        const hashTable = new HashTable()
-        hashTable.set("test", { a: 1 }, 1000)
-        expect(hashTable.size()).toBe(1)
-        jest.advanceTimersByTime(2000)
-        expect(hashTable.size()).toBe(0)
-    })
-    */
 })
