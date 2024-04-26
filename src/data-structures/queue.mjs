@@ -24,4 +24,10 @@ export class Queue {
   get size() {
     return this.#list.size
   }
+
+  toArray() {
+    const array = []
+    this.#list.forEach(value => array.push(value))
+    return array
+  }
 }

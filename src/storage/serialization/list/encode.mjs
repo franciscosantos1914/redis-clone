@@ -1,5 +1,7 @@
 export function serializeList(list) {
-    const length = list.length
+    const all = list.all()
+    const length = all.length
+
     const buffer = new ArrayBuffer(1 + 4 + (4 * length))
     const view = new DataView(buffer)
 
@@ -7,7 +9,7 @@ export function serializeList(list) {
     view.setUint32(1, length, false)
 
     for (let index = 0; index < length; index++) {
-        view.setUint32(5 + (4 * index), list[index], false)
+        view.setUint32(5 + (4 * index), all[index], false)
     }
     return buffer
 }
