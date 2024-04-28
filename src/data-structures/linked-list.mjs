@@ -60,7 +60,7 @@ export class LinkedList {
 
     if (this.head?.value == item) {
       const next = this.head?.next
-      next.previous = null
+      if (next && "previous" in next) next.previous = null
       this.head = next
       this.size--
       return

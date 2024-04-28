@@ -1,5 +1,5 @@
 export class CustomSet extends Set {
-    constructor() {
-        super()
+    constructor(data = []) {
+        super(data)
     }
 }
