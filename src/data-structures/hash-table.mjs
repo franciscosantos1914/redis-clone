@@ -12,7 +12,7 @@ export class HashTable {
     }
 
     set(key, value, ttl = Infinity) {
-        const hashedKey = murmurhash.v2(key)
+        const hashedKey = murmurhash.v2(String(key))
         if (!this.#table[hashedKey] || !Array.isArray(this.#table[hashedKey])) {
             this.#table[hashedKey] = new AVLTree()
         }
@@ -24,7 +24,7 @@ export class HashTable {
     }
 
     get(key) {
-        const hashedKey = murmurhash.v2(key)
+        const hashedKey = murmurhash.v2(String(key))
         if (!this[kHasValue](hashedKey)) return null
         const { value, ttl } = this.#table[hashedKey].find(key).data
         if (Date.now() < ttl) return value
@@ -37,7 +37,7 @@ export class HashTable {
     }
 
     has(key) {
-        const hashedKey = murmurhash.v2(key)
+        const hashedKey = murmurhash.v2(String(key))
         return this[kHasValue](hashedKey) && this.#table[hashedKey].contains(key)
     }
 
@@ -46,7 +46,7 @@ export class HashTable {
     }
 
     remove(key) {
-        const hashedKey = murmurhash.v2(key)
+        const hashedKey = murmurhash.v2(String(key))
         if (!this[kHasValue](hashedKey)) return
         this.#table[hashedKey].remove(key)
         Reflect.deleteProperty(this.#table, hashedKey)
@@ -59,6 +59,15 @@ export class HashTable {
     forEach(callbackfn) {
         const keys = Object.keys(this.#table)
         for (const key of keys) this.#table[key].forEach(node => callbackfn(node.key, node.data.value))
+    }
+
+    toArray() {
+        const array = []
+        const keys = Object.keys(this.#table)
+        for (const key of keys) {
+            this.#table[key].forEach(node => array.push({ key: node.key, value: node.data.value }))
+        }
+        return array
     }
 
     [kSetCleanExpirationTrigger](key, ttl) {
