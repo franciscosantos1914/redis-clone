@@ -1,4 +1,15 @@
+import { Buffer } from 'node:buffer'
+
+import { Messages } from '../../../shareds/messages.mjs'
+import { Stack } from '../../../data-structures/stack.mjs'
+import { AppError, AppSuccess } from '../../../shareds/app-response.mjs'
+
 export function serializeStack(stack) {
+
+    if (!(stack instanceof Stack)) {
+        return new AppError(Messages.Error.INVALID_STACK)
+    }
+
     const length = stack.size
     const all = stack.toArray()
     const buffer = Buffer.alloc(1 + 4 + (4 * length))
@@ -10,5 +21,6 @@ export function serializeStack(stack) {
     for (let index = 0; index < length; index++) {
         view.setUint32(5 + (4 * index), all[index], false)
     }
-    return buffer
+    
+    return new AppSuccess(buffer)
 }

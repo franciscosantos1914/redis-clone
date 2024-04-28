@@ -17,7 +17,7 @@ export class AppError {
 export class AppSuccess {
     constructor(data) {
         this.data = data
-        this.message = msg
+        this.message = null
     }
 
     isOk() {

@@ -1,4 +1,13 @@
+import { Messages } from '../../../shareds/messages.mjs'
+import { HashTable } from '../../../data-structures/hash-table.mjs'
+import { AppError, AppSuccess } from '../../../shareds/app-response.mjs'
+
 async function serializeHash(hashTable) {
+
+    if (!(hashTable instanceof HashTable)) {
+        return new AppError(Messages.Error.INVALID_HASH_TABLE)
+    }
+
     const all = hashTable.toArray();
     const textEncoder = new TextEncoder();
     const jsonString = JSON.stringify(all);
@@ -15,5 +24,5 @@ async function serializeHash(hashTable) {
         dataView.setUint8(i, encodedData[i]);
     }
 
-    return buffer;
+    return new AppSuccess(buffer);
 }

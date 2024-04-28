@@ -1,4 +1,13 @@
+import { Messages } from '../../../shareds/messages.mjs'
+import { List } from '../../../data-structures/list.mjs'
+import { AppError, AppSuccess } from '../../../shareds/app-response.mjs'
+
 export function serializeList(list) {
+
+    if (!(list instanceof List)) {
+        return new AppError(Messages.Error.INVALID_LIST)
+    }
+
     const all = list.all()
     const length = all.length
 
@@ -11,5 +20,5 @@ export function serializeList(list) {
     for (let index = 0; index < length; index++) {
         view.setUint32(5 + (4 * index), all[index], false)
     }
-    return buffer
+    return new AppSuccess(buffer)
 }

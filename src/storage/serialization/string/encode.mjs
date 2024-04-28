@@ -1,4 +1,13 @@
-function serializeString(s) {
+import { Helper } from '../../../shareds/helpers.mjs'
+import { Messages } from '../../../shareds/messages.mjs'
+import { AppError, AppSuccess } from '../../../shareds/app-response.mjs'
+
+
+export function serializeString(s) {
+    if (Helper.isString(s) === false) {
+        return new AppError(Messages.Error.INVALID_VALUE)
+    }
+
     const utf8EncoderStream = new TextEncoderStream()
     const writer = utf8EncoderStream.writable.getWriter()
 
@@ -17,5 +26,5 @@ function serializeString(s) {
     const serializedData = new Uint8Array(serializedBuffer, 5, length);
     serializedData.set(new Uint8Array(buffer));
 
-    return serializedBuffer;
+    return new AppSuccess(serializedBuffer);
 }
