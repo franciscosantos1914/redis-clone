@@ -1,5 +1,6 @@
 import { inflate } from 'node:zlib'
+import { AppSuccess } from '../../shareds/app-response.mjs'
 
-function decompress(compressData) {
-    return inflate(compressData)
+export function decompress(compressData) {
+    return new AppSuccess(inflate(compressData))
 }

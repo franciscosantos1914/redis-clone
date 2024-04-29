@@ -1,11 +1,11 @@
 import { deflate } from 'node:zlib'
 import { Messages } from '../../shareds/messages.mjs'
-import { AppError } from '../../shareds/app-response.mjs'
+import { AppError, AppSuccess } from '../../shareds/app-response.mjs'
 
-function compress(buffer) {
-    if (Buffer.isBuffer(buffer) === false) {
-        return new AppError(Messages.Error.COMPRESS_INVALID_BUFFER)
+export function compress(buffer) {
+    if (Buffer.isBuffer(buffer) === false && !(buffer instanceof ArrayBuffer)) {
+        return new AppError(Messages.Error.INVALID_BUFFER)
     }
 
-    return deflate(buffer)
+    return new AppSuccess(deflate(buffer))
 }
