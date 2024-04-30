@@ -6,6 +6,10 @@ import { AppError, AppSuccess } from '../../../shareds/app-response.mjs'
 
 export function deserializeQueue(buffer) {
 
+    if (arguments.length === 0) {
+        return new AppError(Messages.Error.NO_PARAMS_PROVIDED)
+    }
+
     if (Buffer.isBuffer(buffer) === false && !(buffer instanceof ArrayBuffer)) {
         return new AppError(Messages.Error.INVALID_BUFFER)
     }
@@ -13,7 +17,7 @@ export function deserializeQueue(buffer) {
     const queue = new Queue()
     const vw = new DataView(buffer)
     const length = vw.getUint32(1, false)
-    const prefix = String.fromCharCode(view.getUint8(0));
+    const prefix = String.fromCharCode(vw.getUint8(0));
 
     if (prefix !== 'q') {
         return new AppError(Messages.Error.INVALID_FORMAT)

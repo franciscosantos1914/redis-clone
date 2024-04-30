@@ -6,6 +6,10 @@ import { AppError, AppSuccess } from '../../../shareds/app-response.mjs'
 
 export function deserializeStack(buffer) {
 
+    if (arguments.length === 0) {
+        return new AppError(Messages.Error.NO_PARAMS_PROVIDED)
+    }
+
     if (Buffer.isBuffer(buffer) === false && !(buffer instanceof ArrayBuffer)) {
         return new AppError(Messages.Error.INVALID_BUFFER)
     }

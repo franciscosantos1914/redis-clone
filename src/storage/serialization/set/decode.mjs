@@ -4,7 +4,11 @@ import { Messages } from '../../../shareds/messages.mjs'
 import { CustomSet } from '../../../data-structures/custom-set.mjs'
 import { AppError, AppSuccess } from '../../../shareds/app-response.mjs'
 
-async function deserializeSet(buffer) {
+export async function deserializeSet(buffer) {
+
+    if (arguments.length === 0) {
+        return new AppError(Messages.Error.NO_PARAMS_PROVIDED)
+    }
 
     if (Buffer.isBuffer(buffer) === false && !(buffer instanceof ArrayBuffer)) {
         return new AppError(Messages.Error.INVALID_BUFFER)
@@ -23,8 +27,7 @@ async function deserializeSet(buffer) {
     for (let i = 0; i < length; i++) {
         decodedData += String.fromCharCode(dataView.getUint8(i));
     }
-    const textDecoder = new TextDecoder();
-    const jsonString = textDecoder.decode(decodedData);
-    const values = JSON.parse(jsonString);
+    
+    const values = JSON.parse(decodedData);
     return new AppSuccess(new CustomSet(values));
 }

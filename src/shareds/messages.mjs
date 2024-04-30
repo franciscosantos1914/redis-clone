@@ -20,7 +20,8 @@ export const Messages = {
         INVALID_QUEUE: "Entered Value Is Not A Queue",
         INVALID_LIST: "Entered Value Is Not A List",
         INVALID_HASH_TABLE: "Entered Value Is Not A Hash Table",
-        INVALID_FORMAT: "Invalid Data Format"
+        INVALID_FORMAT: "Invalid Data Format",
+        NO_PARAMS_PROVIDED: "No Parameters Provided"
     },
     Success: {
 

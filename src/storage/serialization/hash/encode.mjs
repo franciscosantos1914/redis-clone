@@ -2,7 +2,11 @@ import { Messages } from '../../../shareds/messages.mjs'
 import { HashTable } from '../../../data-structures/hash-table.mjs'
 import { AppError, AppSuccess } from '../../../shareds/app-response.mjs'
 
-async function serializeHash(hashTable) {
+export async function serializeHash(hashTable) {
+
+    if (arguments.length === 0) {
+        return new AppError(Messages.Error.NO_PARAMS_PROVIDED)
+    }
 
     if (!(hashTable instanceof HashTable)) {
         return new AppError(Messages.Error.INVALID_HASH_TABLE)

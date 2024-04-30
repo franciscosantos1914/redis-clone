@@ -4,6 +4,11 @@ import { AppError, AppSuccess } from '../../../shareds/app-response.mjs'
 
 
 export function serializeString(s) {
+
+    if (arguments.length === 0) {
+        return new AppError(Messages.Error.NO_PARAMS_PROVIDED)
+    }
+
     if (Helper.isString(s) === false) {
         return new AppError(Messages.Error.INVALID_VALUE)
     }

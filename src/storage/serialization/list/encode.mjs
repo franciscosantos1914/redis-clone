@@ -4,6 +4,10 @@ import { AppError, AppSuccess } from '../../../shareds/app-response.mjs'
 
 export function serializeList(list) {
 
+    if (arguments.length === 0) {
+        return new AppError(Messages.Error.NO_PARAMS_PROVIDED)
+    }
+
     if (!(list instanceof List)) {
         return new AppError(Messages.Error.INVALID_LIST)
     }
