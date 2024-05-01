@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "An in memory database",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "start": "node --watch --env-file .env index.mjs",
+    "start": "node --watch --env-file .env index.js",
     "tp": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest -i",
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest -o -i",
     "tc": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest -i --coverage"

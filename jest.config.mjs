@@ -1,14 +1,14 @@
-// jest.config.mjs
+// jest.config.js
 /** @type {import('jest').Config} */
 
 export default {
   fakeTimers: {
      enableGlobally: true
   },
-  clearMocks: true,
   cache: true,
+  clearMocks: true,
   testEnvironment: 'node',
-  testMatch: ["**.test.mjs"],
+  testMatch: ["**.test.js"],
   transformIgnorePatterns: ["/node_modules/", "/build/"],
   coveragePathIgnorePatterns: ["/node_modules/", "/build/"]
  };
