@@ -3,7 +3,7 @@ import { Messages } from '../../shareds/messages.mjs'
 import { AppError, AppSuccess } from '../../shareds/app-response.mjs'
 
 export function compress(buffer) {
-    if (Buffer.isBuffer(buffer) === false && !(buffer instanceof ArrayBuffer)) {
+    if (!(buffer instanceof ArrayBuffer)) {
         return new AppError(Messages.Error.INVALID_BUFFER)
     }
 

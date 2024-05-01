@@ -2,28 +2,20 @@ import { Messages } from '../../../shareds/messages.mjs'
 import { CustomSet } from '../../../data-structures/custom-set.mjs'
 import { AppError, AppSuccess } from '../../../shareds/app-response.mjs'
 
-export async function serializeSet(set) {
+export function serializeSet(set) {
+
+    if (arguments.length === 0) {
+        return new AppError(Messages.Error.NO_PARAMS_PROVIDED)
+    }
+
     if (!(set instanceof CustomSet)) {
         return new AppError(Messages.Error.INVALID_SET);
     }
 
     const all = Array.from(set.values());
-    const textEncoderStream = new TextEncoderStream();
-    const writer = textEncoderStream.writable.getWriter();
-    const reader = textEncoderStream.readable.getReader();
 
-    await writer.write(JSON.stringify(all));
-    writer.close();
-
-    let serializedData = '';
-    while (true) {
-        const { value, done } = await reader.read();
-        if (done) break;
-        serializedData += value;
-    }
-
-    const encodedData = new TextEncoder().encode(serializedData);
-    const length = encodedData.length;
+    const encodedData = new TextEncoder().encode(JSON.stringify(all))
+    const length = encodedData.byteLength;
 
     const buffer = new ArrayBuffer(1 + 4 + length);
     const view = new DataView(buffer);

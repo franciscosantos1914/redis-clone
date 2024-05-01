@@ -1,5 +1,3 @@
-import { Buffer } from 'node:buffer'
-
 import { Messages } from '../../../shareds/messages.mjs'
 import { CustomSet } from '../../../data-structures/custom-set.mjs'
 import { AppError, AppSuccess } from '../../../shareds/app-response.mjs'
@@ -10,7 +8,7 @@ export async function deserializeSet(buffer) {
         return new AppError(Messages.Error.NO_PARAMS_PROVIDED)
     }
 
-    if (Buffer.isBuffer(buffer) === false && !(buffer instanceof ArrayBuffer)) {
+    if (!(buffer instanceof ArrayBuffer)) {
         return new AppError(Messages.Error.INVALID_BUFFER)
     }
 
