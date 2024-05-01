@@ -1,7 +1,7 @@
 import { Messages } from '../../../shareds/messages.js'
 import { AppError, AppSuccess } from '../../../shareds/app-response.js'
 
-export async function deserializeHash(buffer) {
+export async function deserializeString(buffer) {
 
     if (arguments.length === 0) {
         return new AppError(Messages.Error.NO_PARAMS_PROVIDED)
@@ -14,7 +14,7 @@ export async function deserializeHash(buffer) {
     const view = new DataView(buffer);
     const prefix = String.fromCharCode(view.getUint8(0));
 
-    if (prefix !== 'h') {
+    if (prefix !== 's') {
         return new AppError(Messages.Error.INVALID_FORMAT)
     }
 

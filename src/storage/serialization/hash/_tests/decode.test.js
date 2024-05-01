@@ -27,18 +27,20 @@ describe('deserializeHash', () => {
     });
 
     it('should return an AppSuccess with the deserialized HashTable if input is valid', () => {
-        const buffer = new ArrayBuffer(10);
-        const view = new DataView(buffer);
-        view.setUint8(0, 'h'.charCodeAt(0)); // Valid prefix
-        view.setUint32(1, 5, false); // Length of data
+        const data = [{ a: 1 }]
 
-        // Mocking typedArray representing key-value pairs
-        const typedArray = new Uint8Array(buffer, 5, 5);
-        const json = JSON.stringify([{ a: 1 }])
+        const json = JSON.stringify(data)
         const textEncoder = new TextEncoder()
         const encoded = textEncoder.encode(json)
 
-        typedArray[0] = encoded
+        const buffer = new ArrayBuffer(5 + encoded.length);
+        const view = new DataView(buffer);
+        view.setUint8(0, 'h'.charCodeAt(0)); // Valid prefix
+        view.setUint32(1, encoded.length, false); // Length of data
+
+        for (let index = 0; index < encoded.length; index++) {
+            view.setUint8(5 + index, encoded[index])
+        }
 
         const result = deserializeHash(buffer);
         expect(result instanceof AppSuccess).toBe(true);

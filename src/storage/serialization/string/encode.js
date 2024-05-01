@@ -2,7 +2,6 @@ import { Helper } from '../../../shareds/helpers.js'
 import { Messages } from '../../../shareds/messages.js'
 import { AppError, AppSuccess } from '../../../shareds/app-response.js'
 
-
 export function serializeString(s) {
 
     if (arguments.length === 0) {

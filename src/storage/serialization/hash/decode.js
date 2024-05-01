@@ -22,9 +22,16 @@ export function deserializeHash(buffer) {
     }
 
     const typedArray = new Uint8Array(buffer, 5, length)
+    let stringified = ""
 
-    for (let index = 0; index < typedArray.length; index++) {
-        hashTable.set(typedArray[index].key, typedArray[index].value)
+    for (let index = 0; index < typedArray.byteLength; index++) {
+        stringified += String.fromCharCode(typedArray[index])
+    }
+
+    const parsed = JSON.parse(stringified)
+
+    for (const element of parsed) {
+        hashTable.set(element.key, element.value)
     }
 
     return new AppSuccess(hashTable)
