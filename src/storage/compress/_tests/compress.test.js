@@ -10,7 +10,7 @@ describe('compress', () => {
         expect(result.message).toBe(Messages.Error.INVALID_BUFFER);
     });
 
-    /*it('should return an AppSuccess with the compressed buffer if input is valid', () => {
+    it('should return an AppSuccess with the compressed buffer if input is valid', () => {
         const buffer = Buffer.from('hello world');
         jest.spyOn(global, 'Buffer').mockImplementation(() => buffer);
 
@@ -31,5 +31,4 @@ describe('compress', () => {
         expect(result instanceof AppSuccess).toBe(true);
         expect(result.data).toEqual(compressedBuffer);
     });
-    */
 });

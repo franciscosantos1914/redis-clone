@@ -10,6 +10,7 @@ export default {
   testEnvironment: 'node',
   testMatch: ["**.test.js"],
   transformIgnorePatterns: ["/node_modules/", "/build/"],
-  coveragePathIgnorePatterns: ["/node_modules/", "/build/"]
+  coveragePathIgnorePatterns: ["/node_modules/", "/build/"],
+  setupFiles: ["<rootDir>/test-setup.js"]
  };
  
