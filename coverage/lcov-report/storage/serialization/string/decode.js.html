@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for storage/serialization/set/encode.js</title>
+    <title>Code coverage report for storage/serialization/string/decode.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../prettify.css" />
     <link rel="stylesheet" href="../../../base.css" />
@@ -19,20 +19,20 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../index.html">All files</a> / <a href="index.html">storage/serialization/set</a> encode.js</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">storage/serialization/string</a> decode.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>16/16</span>
+                <span class='fraction'>15/15</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>4/4</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>15/15</span>
+                <span class='fraction'>14/14</span>
             </div>
         
             
@@ -92,14 +92,13 @@
 <a name='L27'></a><a href='#L27'>27</a>
 <a name='L28'></a><a href='#L28'>28</a>
 <a name='L29'></a><a href='#L29'>29</a>
-<a name='L30'></a><a href='#L30'>30</a>
-<a name='L31'></a><a href='#L31'>31</a>
-<a name='L32'></a><a href='#L32'>32</a>
-<a name='L33'></a><a href='#L33'>33</a>
-<a name='L34'></a><a href='#L34'>34</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L30'></a><a href='#L30'>30</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
@@ -107,62 +106,51 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">26x</span>
+<span class="cline-any cline-yes">20x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Messages } from '../../../shareds/messages.js'
-import { CustomSet } from '../../../data-structures/custom-set.js'
 import { AppError, AppSuccess } from '../../../shareds/app-response.js'
 &nbsp;
-export function serializeSet(set) {
+export async function deserializeString(buffer) {
 &nbsp;
     if (arguments.length === 0) {
         return new AppError(Messages.Error.NO_PARAMS_PROVIDED)
     }
 &nbsp;
-    if (!(set instanceof CustomSet)) {
-        return new AppError(Messages.Error.INVALID_SET);
+    if (!(buffer instanceof ArrayBuffer)) {
+        return new AppError(Messages.Error.INVALID_BUFFER)
     }
 &nbsp;
-    const all = Array.from(set.values());
-&nbsp;
-    const encodedData = new TextEncoder().encode(JSON.stringify(all))
-    const length = encodedData.byteLength;
-&nbsp;
-    const buffer = new ArrayBuffer(1 + 4 + length);
     const view = new DataView(buffer);
+    const prefix = String.fromCharCode(view.getUint8(0));
 &nbsp;
-    view.setUint8(0, 'e'.charCodeAt(0));
-    view.setUint32(1, length, false);
-&nbsp;
-    const dataView = new DataView(buffer, 5);
-    for (let i = 0; i &lt; encodedData.length; i++) {
-        dataView.setUint8(i, encodedData[i]);
+    if (prefix !== 's') {
+        return new AppError(Messages.Error.INVALID_FORMAT)
     }
 &nbsp;
-    return new AppSuccess(buffer);
-}
+    const length = view.getUint32(1, false);
+    const dataView = new DataView(buffer, 5, length);
+    let decodedData = '';
 &nbsp;
-&nbsp;</pre></td></tr></table></pre>
+    for (let i = 0; i &lt; length; i++) {
+        decodedData += String.fromCharCode(dataView.getUint8(i));
+    }
+&nbsp;
+    return new AppSuccess(decodedData)
+}</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
