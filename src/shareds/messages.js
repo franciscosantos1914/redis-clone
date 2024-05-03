@@ -2,6 +2,7 @@ export const Messages = {
     Error: {
         DICT_NOT_FOUND: "Dictionary Not Found",
         INVALID_KEY: "Invalid Key. Key Must Be String",
+        INVALID_KEYS: "Invalid Keys. Keys Must Be String",
         ARGUMENT_MUST_YES_OR_NO: "Argument Must Be Yes Or No",
         INVALID_PASSWORD: "Invalid Password. Password Must Be A String",
         INVALID_USERNAME: "Invalid Username. Username Must Be A String",
