@@ -1,11 +1,11 @@
-import { Messages } from '../../shareds/messages.js'
-import { hashTableStore } from './hash-table-store.js'
-import { AppError } from '../../shareds/app-response.js'
-import { Helper } from '../../shareds/helpers.js'
+import { Helper } from '../../shareds/helpers'
+import { STORAGE } from '../../storage/storage'
+import { Messages } from '../../shareds/messages'
+import { AppError, AppSuccess } from '../../shareds/app-response'
 
-function existsCommand(key) {
-    if (Helper.isString(key) === false) {
-        return new AppError(Messages.Error.EXISTS_CMD_INVALID_KEY_ARGUMENT)
+export function existsCommand(key, userId) {
+    if (!Helper.isString(key) || String(key).trim().length === 0) {
+        return new AppError(Messages.Error.INVALID_KEY)
     }
-    return hashTableStore.has(key)
+    return new AppSuccess(!!STORAGE[userId]?.dictionary[key])
 }
