@@ -10,8 +10,8 @@ export function moveSetCommand(source, destination, userId, value) {
         return new AppError(Messages.Error.INVALID_KEY)
     }
 
-    const sourceSet = STORAGE[userId]?.dictionary[source]
-    const destinationSet = STORAGE[userId]?.dictionary[destination]
+    const sourceSet = STORAGE[userId]?.set[source]
+    const destinationSet = STORAGE[userId]?.set[destination]
 
     if (!(sourceSet instanceof CustomSet) || !(destinationSet instanceof CustomSet)) {
         return new AppError(Messages.Error.KEY_NOT_FOUND)

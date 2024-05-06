@@ -9,7 +9,7 @@ export function scanSetCommand(key, userId, cursor, count) {
         return new AppError(Messages.Error.INVALID_KEY)
     }
 
-    const set = STORAGE[userId]?.set
+    const set = STORAGE[userId]?.set[key]
 
     if (!(set instanceof CustomSet)) {
         return new AppError(Messages.Error.KEY_NOT_FOUND)

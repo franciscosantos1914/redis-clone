@@ -9,16 +9,16 @@ export function unionSetCommand(destination, userId, ...keys) {
         return new AppError(Messages.Error.INVALID_KEY)
     }
 
-    const sets = keys.map(key => STORAGE[userId]?.dictionary[key])
+    const sets = keys.map(key => STORAGE[userId]?.set[key])
 
     if (sets.some(set => !(set instanceof CustomSet))) {
         return new AppError(Messages.Error.KEY_NOT_FOUND)
     }
 
-    const destinationSet = STORAGE[userId]?.dictionary[destination] || new CustomSet()
+    const destinationSet = STORAGE[userId]?.set[destination] || new CustomSet()
 
     for (const key of keys) {
-        const sourceSet = STORAGE[userId]?.dictionary[key]
+        const sourceSet = STORAGE[userId]?.set[key]
 
         if (sourceSet instanceof CustomSet) {
             sourceSet.forEach(value => {
@@ -27,7 +27,5 @@ export function unionSetCommand(destination, userId, ...keys) {
         }
     }
 
-    STORAGE[userId]["set"] = destinationSet
-
-    return new AppSuccess(destinationSet.size)
+    return new AppSuccess(Array.from(destinationSet.values()))
 }

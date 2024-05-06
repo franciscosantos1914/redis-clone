@@ -9,17 +9,17 @@ export function diffSetCommand(destination, userId, ...keys) {
         return new AppError(Messages.Error.INVALID_KEY)
     }
 
-    const sets = keys.map(key => STORAGE[userId]?.set)
+    const sets = keys.map(key => STORAGE[userId]?.set[key])
 
     if (sets.some(set => !(set instanceof CustomSet))) {
         return new AppError(Messages.Error.KEY_NOT_FOUND)
     }
 
     const customSet = new CustomSet()
-    const destinationSet = STORAGE[userId]?.set || new CustomSet()
+    const destinationSet = STORAGE[userId]?.set[destination] || new CustomSet()
 
     for (const key of keys) {
-        const sourceSet = STORAGE[userId]?.dictionary[key]
+        const sourceSet = STORAGE[userId]?.set[key]
 
         if (sourceSet instanceof CustomSet) {
             sourceSet.forEach(value => {
@@ -30,7 +30,5 @@ export function diffSetCommand(destination, userId, ...keys) {
         }
     }
 
-    STORAGE[userId]["set"] = customSet
-
-    return new AppSuccess(customSet.size)
+    return new AppSuccess(Array.from(customSet.values()))
 }
