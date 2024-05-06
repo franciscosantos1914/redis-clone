@@ -1,15 +1,23 @@
-import { Helper } from '../../../shareds/helpers.js'
-import { Messages } from '../../../shareds/messages.js'
-import { AppError } from '../../../shareds/app-response.js'
+import { Helper } from '../../shareds/helpers.js'
+import { Messages } from '../../shareds/messages.js'
+import { HashTable } from '../data-structures/hash-table.js'
+import { AppError, AppSuccess } from '../../shareds/app-response.js'
 
-export function JSONGetCommand(document, path, key = null) {
-    if (Helper.isString(document) === false) {
-        return new AppError(Messages.Error.JSON_GET_CMD_INVALID_DOCUMENT_KEY)
+export function JSONGetCommand(key, path, clientId) {
+    if (!Helper.isString(key)) {
+        return new AppError(Messages.Error.INVALID_KEY);
     }
-    if (Helper.isString(path) === false) {
-        return new AppError(Messages.Error.JSON_GET_CMD_INVALID_PATH_KEY)
+    if (!Helper.isString(path)) {
+        return new AppError(Messages.Error.INVALID_PATH);
     }
-    if (key && Helper.isString(key) === false) {
-        return new AppError(Messages.Error.JSON_GET_CMD_INVALID_KEY)
+
+    STORAGE[clientId] = STORAGE[clientId] || {};
+    STORAGE[clientId]["json"] = STORAGE[clientId]["json"] || {};
+
+    if (!(STORAGE[clientId]["json"][key] instanceof HashTable)) {
+        return new AppError(Messages.Error.KEY_NOT_FOUND);
     }
+
+    const value = STORAGE[clientId]["json"][key].get(path);
+    return new AppSuccess(value);
 }

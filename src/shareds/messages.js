@@ -25,6 +25,7 @@ export const Messages = {
         NO_PARAMS_PROVIDED: "No Parameters Provided",
         KEY_NOT_FOUND: "Key Not Found",
         INVALID_INDEX: "Invalid Index. Index Must Be A Number",
+        INVALID_PATH: "Invalid Path. Path Must Be A String"
     },
     Success: {
 

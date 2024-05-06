@@ -1,15 +1,23 @@
-import { Helper } from '../../../shareds/helpers.js'
-import { Messages } from '../../../shareds/messages.js'
-import { AppError } from '../../../shareds/app-response.js'
+import { Helper } from '../../shareds/helpers.js'
+import { Messages } from '../../shareds/messages.js'
+import { HashTable } from '../data-structures/hash-table.js'
+import { AppError, AppSuccess } from '../../shareds/app-response.js'
 
-export function JSONDelCommand(document, path, key = null) {
-    if (Helper.isString(document) === false) {
-        return new AppError(Messages.Error.JSON_DEL_CMD_INVALID_DOCUMENT_KEY)
+export function JSONDelCommand(key, path, clientId) {
+    if (!Helper.isString(key)) {
+        return new AppError(Messages.Error.INVALID_KEY);
     }
-    if (Helper.isString(path) === false) {
-        return new AppError(Messages.Error.JSON_DEL_CMD_INVALID_PATH_KEY)
+    if (!Helper.isString(path)) {
+        return new AppError(Messages.Error.INVALID_PATH);
     }
-    if (key && Helper.isString(key) === false) {
-        return new AppError(Messages.Error.JSON_DEL_CMD_INVALID_KEY)
+
+    STORAGE[clientId] = STORAGE[clientId] || {};
+    STORAGE[clientId]["json"] = STORAGE[clientId]["json"] || {};
+
+    if (!(STORAGE[clientId]["json"][key] instanceof HashTable)) {
+        return new AppError(Messages.Error.KEY_NOT_FOUND);
     }
+
+    STORAGE[clientId]["json"][key].del(path);
+    return new AppSuccess("ok");
 }

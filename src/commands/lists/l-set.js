@@ -18,7 +18,6 @@ export function setListCommand(key, index, value, clientId) {
 
     if (!(STORAGE[clientId]["list"][key] instanceof List)) {
         STORAGE[clientId]["list"][key] = new List()
-        STORAGE[clientId]["list"][key].setIndexAndValue(index, value)
     }
 
     STORAGE[clientId]["list"][key].setIndexAndValue(index, value)
