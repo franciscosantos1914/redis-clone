@@ -1,12 +1,12 @@
 import { STORAGE } from '../../storage/storage'
 import { AppSuccess } from '../../shareds/app-response'
 
-export function flushAll(userId) {
+export function flushAll(clientId) {
     let counter = 0
-    const keys = Reflect.ownKeys(STORAGE[userId]["dictionary"])
+    const keys = Reflect.ownKeys(STORAGE[clientId]["dictionary"])
 
     if (keys.length > 0) {
-        STORAGE[userId]["dictionary"] = {}
+        STORAGE[clientId]["dictionary"] = {}
         counter = keys.length
 
     }

@@ -4,14 +4,14 @@ import { Messages } from '../../shareds/messages'
 import { CustomSet } from '../../data-structures/custom-set'
 import { AppError, AppSuccess } from '../../shareds/app-response'
 
-export function moveSetCommand(source, destination, userId, value) {
+export function moveSetCommand(source, destination, clientId, value) {
     if (!Helper.isString(source) || String(source).trim().length === 0 ||
         !Helper.isString(destination) || String(destination).trim().length === 0) {
         return new AppError(Messages.Error.INVALID_KEY)
     }
 
-    const sourceSet = STORAGE[userId]?.set[source]
-    const destinationSet = STORAGE[userId]?.set[destination]
+    const sourceSet = STORAGE[clientId]?.set[source]
+    const destinationSet = STORAGE[clientId]?.set[destination]
 
     if (!(sourceSet instanceof CustomSet) || !(destinationSet instanceof CustomSet)) {
         return new AppError(Messages.Error.KEY_NOT_FOUND)

@@ -4,12 +4,12 @@ import { Messages } from '../../shareds/messages'
 import { CustomSet } from '../../data-structures/custom-set'
 import { AppError, AppSuccess } from '../../shareds/app-response'
 
-export function cardSetCommand(key, userId) {
+export function cardSetCommand(key, clientId) {
     if (!Helper.isString(key) || String(key).trim().length === 0) {
         return new AppError(Messages.Error.INVALID_KEY)
     }
 
-    const set = STORAGE[userId]?.set[key]
+    const set = STORAGE[clientId]?.set[key]
 
     if (!(set instanceof CustomSet)) {
         return new AppError(Messages.Error.KEY_NOT_FOUND)

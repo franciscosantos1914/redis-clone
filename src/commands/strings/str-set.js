@@ -3,13 +3,13 @@ import { STORAGE } from '../../storage/storage'
 import { Messages } from '../../shareds/messages'
 import { AppError, AppSuccess } from '../../shareds/app-response'
 
-function rmKey(key, userId) {
-    if (Reflect.has(STORAGE[userId]["dictionary"], key)) {
-        Reflect.deleteProperty(STORAGE[userId]["dictionary"], key)
+function rmKey(key, clientId) {
+    if (Reflect.has(STORAGE[clientId]["dictionary"], key)) {
+        Reflect.deleteProperty(STORAGE[clientId]["dictionary"], key)
     }
 }
 
-export function setCommand(key, value, userId, ttl = Infinity) {
+export function setCommand(key, value, clientId, ttl = Infinity) {
     if (!Helper.isString(key) || String(key).trim().length === 0) {
         return new AppError(Messages.Error.INVALID_KEY)
     }
@@ -17,16 +17,16 @@ export function setCommand(key, value, userId, ttl = Infinity) {
         return new AppError(Messages.Error.INVALID_VALUE)
     }
 
-    STORAGE[userId] = STORAGE[userId] || {}
-    STORAGE[userId]["dictionary"] = STORAGE[userId]["dictionary"] || {}
-    STORAGE[userId]["dictionary"][key] = value
+    STORAGE[clientId] = STORAGE[clientId] || {}
+    STORAGE[clientId]["dictionary"] = STORAGE[clientId]["dictionary"] || {}
+    STORAGE[clientId]["dictionary"][key] = value
 
     if (isNaN(ttl)) {
         ttl = Infinity
     }
 
     if (ttl != Infinity) {
-        setTimeout(() => rmKey(key, userId), ttl)
+        setTimeout(() => rmKey(key, clientId), ttl)
     }
 
     return new AppSuccess("ok")

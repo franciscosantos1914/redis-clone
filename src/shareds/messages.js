@@ -23,7 +23,8 @@ export const Messages = {
         INVALID_HASH_TABLE: "Entered Value Is Not A Hash Table",
         INVALID_FORMAT: "Invalid Data Format",
         NO_PARAMS_PROVIDED: "No Parameters Provided",
-        KEY_NOT_FOUND: "Key Not Found"
+        KEY_NOT_FOUND: "Key Not Found",
+        INVALID_INDEX: "Invalid Index. Index Must Be A Number",
     },
     Success: {
 

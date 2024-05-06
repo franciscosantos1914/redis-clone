@@ -26,6 +26,10 @@ export class List {
         return this.#list
     }
 
+    setIndexAndValue(index, value) {
+        this.#list[index] = value
+    }
+
     get size() {
         return this.#list.length
     }

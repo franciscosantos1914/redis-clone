@@ -4,20 +4,20 @@ import { Messages } from '../../shareds/messages'
 import { CustomSet } from '../../data-structures/custom-set'
 import { AppError, AppSuccess } from '../../shareds/app-response'
 
-export function addSetCommand(key, userId, ...values) {
+export function addSetCommand(key, clientId, ...values) {
     if (!Helper.isString(key) || String(key).trim().length === 0) {
         return new AppError(Messages.Error.INVALID_KEY)
     }
 
-    STORAGE[userId] = STORAGE[userId] || {}
-    STORAGE[userId]["set"] = STORAGE[userId]["set"] || {}
+    STORAGE[clientId] = STORAGE[clientId] || {}
+    STORAGE[clientId]["set"] = STORAGE[clientId]["set"] || {}
     let counter = values.length
 
-    if (!(STORAGE[userId]["set"][key] instanceof CustomSet)) {
-        STORAGE[userId]["set"][key] = new CustomSet(values)
+    if (!(STORAGE[clientId]["set"][key] instanceof CustomSet)) {
+        STORAGE[clientId]["set"][key] = new CustomSet(values)
     } else {
-        for (const value of values) STORAGE[userId]["set"][key].add(value)
-        counter = STORAGE[userId]["set"][key].size
+        for (const value of values) STORAGE[clientId]["set"][key].add(value)
+        counter = STORAGE[clientId]["set"][key].size
     }
     return new AppSuccess(counter)
 }
