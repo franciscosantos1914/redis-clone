@@ -1,24 +1,24 @@
-import { Helper } from '../../../shareds/helpers.js'
-import { Messages } from '../../../shareds/messages.js'
-import { AppError } from '../../../shareds/app-response.js'
-import { BloomFilter } from '../../../data-structures/bloom-filter.js'
+import { Helper } from '../../shareds/helpers'
+import { STORAGE } from '../../storage/storage'
+import { Messages } from '../../shareds/messages'
+import { BloomFilter } from '../../data-structures/bloom-filter'
+import { AppError, AppSuccess } from '../../shareds/app-response'
 
-import { bfDictStore } from './dict-store.js'
-
-function bfAddCommand(key, value) {
-
-    if (Helper.isString(key) === false) {
-        return new AppError(Messages.Error.BF_ADD_CMD_INVALID_KEY)
+export function bloomFilterAddCommand(key, item, clientId) {
+    if (!Helper.isString(key)) {
+        return new AppError(Messages.Error.INVALID_KEY);
+    }
+    if (!Helper.isString(item)) {
+        return new AppError(Messages.Error.INVALID_ITEM);
     }
 
-    if (bfDictStore.hasOwnProperty(key) === false || !(bfDictStore[key] instanceof BloomFilter)) {
-        bfDictStore[key] = new BloomFilter()
+    STORAGE[clientId] = STORAGE[clientId] || {};
+    STORAGE[clientId]["bloom"] = STORAGE[clientId]["bloom"] || {};
+
+    if (!(STORAGE[clientId]["bloom"][key] instanceof BloomFilter)) {
+        STORAGE[clientId]["bloom"][key] = new BloomFilter(1024, 3);
     }
 
-    if (bfDictStore[key].mightContain(value) === false) {
-        bfDictStore[key].add(value)
-        return 1
-    }
-
-    return 0
+    STORAGE[clientId]["bloom"][key].add(item);
+    return new AppSuccess("ok");
 }
