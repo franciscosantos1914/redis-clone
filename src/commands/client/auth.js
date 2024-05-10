@@ -2,11 +2,20 @@ import { Helper } from '../../shareds/helpers'
 import { Messages } from '../../shareds/messages'
 import { AppError, AppSuccess } from '../../shareds/app-response'
 
-export function authCommand(username, password) {
-    if (!Helper.isString(username) || String(username).trim().length === 0) {
+export function authCommand(credentials = {}) {
+
+    if (!Helper.objHas(credentials, "username")) {
+        return new AppError(Messages.Error.NO_USERNAME_PROVIDED)
+    }
+
+    if (!Helper.objHas(credentials, "password")) {
+        return new AppError(Messages.Error.NO_PASSWORD_PROVIDED)
+    }
+
+    if (!Helper.isString(credentials.username) || String(credentials.username).trim().length === 0) {
         return new AppError(Messages.Error.INVALID_USERNAME)
     }
-    if (!Helper.isString(password) || String(password).trim().length === 0) {
+    if (!Helper.isString(credentials.password) || String(credentials.password).trim().length === 0) {
         return new AppError(Messages.Error.INVALID_PASSWORD)
     }
 

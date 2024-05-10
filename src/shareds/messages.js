@@ -27,6 +27,8 @@ export const Messages = {
         INVALID_INDEX: "Invalid Index. Index Must Be A Number",
         INVALID_PATH: "Invalid Path. Path Must Be A String",
         INVALID_PING_MESSAGE: "Invalid Ping Message. Message Must Be A String",
+        NO_USERNAME_PROVIDED: "No Username Provided",
+        NO_PASSWORD_PROVIDED: "No Password Provided"
     },
     Success: {
 
