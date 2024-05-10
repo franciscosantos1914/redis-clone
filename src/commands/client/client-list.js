@@ -1,12 +1,17 @@
-function clientListCommand() {
-    return [
-        {
-            id: Math.random().toString().replace(".", ""),
-            addr: 'http://example.com',
-            name: "example",
-            age: 10,
-            db: 'new-db-id',
-            user: 'user'
-        }
-    ]
+import { AppSuccess } from '../../shareds/app-response'
+
+export function clientListCommand(connPool) {
+    const clients = []
+
+    for (const key in connPool) {
+        const client = connPool[key]["info"]
+        clients.push({
+            clientId: client["id"],
+            port: client.localPort,
+            address: client.address,
+            clientName: client["name"],
+        })
+    }
+
+    return new AppSuccess(clients)
 }

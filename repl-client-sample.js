@@ -17,6 +17,8 @@ const socket = createConnection({
     }
 })
 
+socket.write('Auth')
+
 socket
     .on("data", data => {
         clear()
