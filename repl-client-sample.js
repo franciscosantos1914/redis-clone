@@ -1,6 +1,8 @@
 import { start } from 'node:repl'
+import { Buffer } from 'node:buffer'
 import { createConnection } from 'node:net'
 
+const { stringify: toString } = JSON
 const { log, clear } = console
 
 function replHandler() {
@@ -11,13 +13,14 @@ const socket = createConnection({
     port: 3066,
     host: "localhost",
     keepAlive: true,
+})
+
+socket.write(Buffer.from(toString({
     auth: {
         username: "boo",
         password: "far"
     }
-})
-
-socket.write('Auth')
+})))
 
 socket
     .on("data", data => {
