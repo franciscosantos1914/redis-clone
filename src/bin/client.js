@@ -2,11 +2,13 @@ import { start } from 'node:repl'
 import { Buffer } from 'node:buffer'
 import { createConnection } from 'node:net'
 
-const { stringify: toString } = JSON
+import prompt from 'prompt-sync'
+
 const { log, clear } = console
+const { stringify: toString } = JSON
 
 function replHandler() {
-    return start(`redis-clone > `)
+    return prompt({ autocomplete: true })(`redis-clone > `)
 }
 
 const socket = createConnection({
@@ -15,24 +17,27 @@ const socket = createConnection({
     keepAlive: true,
 })
 
-socket.write(Buffer.from(toString({
-    auth: {
-        username: "boo",
-        password: "far"
-    }
-})))
+const credentials = toString({
+    username: "boo",
+    password: "far"
+})
+
+const buffer = Buffer.alloc(1 + credentials.length)
+
+buffer.writeUInt8(0xfe, 0)
+buffer.write(credentials, 1)
+
+socket.write(buffer)
 
 socket
     .on("data", data => {
         clear()
-        replHandler()
-            .on("line", stdin => {
-                socket.write(stdin)
-            })
+        log(data.toString())
+        const stdin = replHandler()
+        socket.write(stdin)
     })
     .on("end", () => {
         replHandler()
-            .close()
         clear()
     })
     .on("error", (err) => {

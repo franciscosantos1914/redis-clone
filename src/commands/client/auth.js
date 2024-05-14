@@ -1,6 +1,6 @@
-import { Helper } from '../../shareds/helpers'
-import { Messages } from '../../shareds/messages'
-import { AppError, AppSuccess } from '../../shareds/app-response'
+import { Helper } from '../../shareds/helpers.js'
+import { Messages } from '../../shareds/messages.js'
+import { AppError, AppSuccess } from '../../shareds/app-response.js'
 
 export function authCommand(credentials = {}) {
 

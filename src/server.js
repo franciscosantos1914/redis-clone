@@ -6,44 +6,51 @@ import { STORAGE } from './storage/storage.js'
 import { authCommand } from './commands/client/auth.js'
 import { setClientIdentityCommand } from './commands/client/client-set-identity.js'
 
-createServer()
-    .on("connection", getSocket)
-    .on("close", () => console.log("Server has closed!"))
-    .on("error", (err) => console.error(`Unable to run server because of: ${err}`))
-    .listen(env.PORT, () => console.log(`Server is up and running on port: ${env.PORT}`))
-
-function getSocket(socket) {
-    console.log("New Client Connected!")
-    handleClient(socket)
+function date() {
+    return new Date().toISOString()
 }
 
-/**
- * 
- * Data Structure That Must Come From client
- * 
- * {
- *      type: 'auth' | 'command'
- *      payload: object | string
- * }
- * 
- */
+export function boot() {
+    createServer()
+        .on("connection", getSocket)
+        .on("close", () => console.log("%s | Server has closed!", date()))
+        .on("error", (err) => console.error('%s | Unable to run server because of: %s', date(), err))
+        .listen(env.PORT, () => console.log('%s | Server is up and running on port: %d', date(), env.PORT))
+}
+
+function getSocket(socket) {
+    console.log('%s | New Client Connected', date())
+    handleClient(socket)
+}
 
 
 function handleClient(socket) {
     socket
-        .on("data", (buffer) => {
-            const data = Buffer.from(buffer).toString("utf-8").trim()
-            if (data.length > 0) handleSocketPacket(data)
+        .on("data", (packet) => {
+            if (Buffer.isBuffer(packet)) handleSocketPacket(packet, socket)
+            else socket.write(date() + ' | Packet Sent Must Always Be A Buffer')
         })
-        .on("close", () => console.log(`Client ${socket["id"]} closed!`))
-        .write(`Client connected to the server with id: ${socket["name"]}`)
+        .on("close", () => console.log('%s | Client closed!', date()))
+        .write(date() + ' | Client connected to the server')
 }
 
-function handleSocketPacket(data) {
-    switch (data?.type) {
-        case 'auth':
-            const isAuthenticated = authCommand(data?.payload)
-            if (isAuthenticated.isOk()) setClientIdentityCommand(socket, STORAGE)
+function handleSocketPacket(packet, socket) {
+    const packetHeader = packet.readUint8(0)
+    packetHeader.toString(16)
+
+    switch (packetHeader) {
+        case 0xfe:
+            const packetBody = packet.slice(1).toString()
+            const credentials = JSON.parse(packetBody)
+            const isAuthenticated = authCommand(credentials)
+            if (isAuthenticated.isOk()) {
+                setClientIdentityCommand(socket, STORAGE)
+                socket.write(`${date()} | User authenticated successfully!`)
+            }
+            break;
+
+        case 0xff:
+            // Handle Commands
             break;
 
         default:
