@@ -8,6 +8,7 @@ export const Messages = {
         INVALID_USERNAME: "Invalid Username. Username Must Be A String",
         INVALID_VALUE_TYPE: "Invalid Value Type. Value Must Be A String",
         INVALID_VALUE: "Invalid Value. Value Must Be A String",
+        INVALID_FIELD: "Invalid Field. Field Must Be A String",
         INVALID_KEY_ARGUMENT: "Invalid Argument. Argument Must Be A Array Of Key Strings",
         INVALID_DICT_NAME: "Invalid Dictionary Name. Dictionary Name Must Be A String",
         INVALID_ARGUMENT: "Invalid Argument. Argument Must Be String",

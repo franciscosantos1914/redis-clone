@@ -1,14 +1,38 @@
-import { start } from 'node:repl'
 import { Buffer } from 'node:buffer'
+import promptSync from 'prompt-sync'
 import { createConnection } from 'node:net'
-
-import prompt from 'prompt-sync'
+import { drawMessage } from './animation.js'
 
 const { log, clear } = console
 const { stringify: toString } = JSON
 
-function replHandler() {
-    return prompt({ autocomplete: true })(`redis-clone > `)
+function prompt() {
+    const stdout = promptSync({ autocomplete: true })('redis-clone > ')
+    const stdoutStr = toString(stdout)
+    if (stdout && stdoutStr.length > 0) {
+        const buffer = Buffer.alloc(1 + stdoutStr.length)
+        buffer.writeUInt8(0xff, 0)
+        buffer.write(stdoutStr, 1)
+        socket.write(buffer)
+        prompt()
+    }
+}
+
+function handleServerResponse(packet) {
+    const packetHeader = packet.readUint8(0)
+    packetHeader.toString(16)
+    const packetBody = packet.slice(1).toString()
+
+    clear()
+
+    switch (packetHeader) {
+        case 0xfe:
+            drawMessage()
+            break;
+        case 0xff:
+            log(packetBody)
+            break;
+    }
 }
 
 const socket = createConnection({
@@ -26,18 +50,15 @@ const buffer = Buffer.alloc(1 + credentials.length)
 
 buffer.writeUInt8(0xfe, 0)
 buffer.write(credentials, 1)
-
 socket.write(buffer)
 
 socket
     .on("data", data => {
-        clear()
-        log(data.toString())
-        const stdin = replHandler()
-        socket.write(stdin)
+        handleServerResponse(data)
+        prompt()
     })
     .on("end", () => {
-        replHandler()
+        prompt().close()
         clear()
     })
     .on("error", (err) => {

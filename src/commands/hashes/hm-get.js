@@ -1,24 +1,25 @@
-import { Helper } from '../../shareds/helpers'
-import { STORAGE } from '../../storage/storage'
-import { Messages } from '../../shareds/messages'
-import { HashTable } from '../../data-structures/hash-table'
-import { AppError, AppSuccess } from '../../shareds/app-response'
+import { Helper } from '../../shareds/helpers.js'
+import { Messages } from '../../shareds/messages.js'
+import { HashTable } from '../../data-structures/hash-table.js'
+import { AppError, AppSuccess } from '../../shareds/app-response.js'
 
-export function hashMgetCommand(clientId, key, ...fields) {
+// HMGET key field [field ...]
+
+export function hashMgetCommand(connPool, clientId, key, ...fields) {
     if (!Helper.isString(key)) {
         return new AppError(Messages.Error.INVALID_KEY);
     }
 
-    STORAGE[clientId] = STORAGE[clientId] || {};
-    STORAGE[clientId]["hash"] = STORAGE[clientId]["hash"] || {};
+    connPool[clientId] = connPool[clientId] || {};
+    connPool[clientId]["hash"] = connPool[clientId]["hash"] || {};
 
-    if (!(STORAGE[clientId]["hash"][key] instanceof HashTable)) {
+    if (!(connPool[clientId]["hash"][key] instanceof HashTable)) {
         return new AppError(Messages.Error.KEY_NOT_FOUND);
     }
 
     const values = [];
     for (const field of fields) {
-        const value = STORAGE[clientId]["hash"][key].get(field);
+        const value = connPool[clientId]["hash"][key].get(field);
         values.push(value);
     }
     return new AppSuccess(values);

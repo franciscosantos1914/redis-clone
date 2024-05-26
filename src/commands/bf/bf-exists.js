@@ -1,24 +1,25 @@
-import { Helper } from '../../shareds/helpers'
-import { STORAGE } from '../../storage/storage'
-import { Messages } from '../../shareds/messages'
-import { BloomFilter } from '../../data-structures/bloom-filter'
-import { AppError, AppSuccess } from '../../shareds/app-response'
+import { Helper } from '../../shareds/helpers.js'
+import { Messages } from '../../shareds/messages.js'
+import { BloomFilter } from '../../data-structures/bloom-filter.js'
+import { AppError, AppSuccess } from '../../shareds/app-response.js'
 
-export function bloomFilterExistCommand(key, item, clientId) {
+// BF.EXISTS key item
+
+export function bloomFilterExistCommand(key, item, clientId, connPool) {
     if (!Helper.isString(key)) {
         return new AppError(Messages.Error.INVALID_KEY);
     }
     if (!Helper.isString(item)) {
-        return new AppError(Messages.Error.INVALID_ITEM);
+        return new AppError(Messages.Error.INVALID_VALUE);
     }
 
-    STORAGE[clientId] = STORAGE[clientId] || {};
-    STORAGE[clientId]["bloom"] = STORAGE[clientId]["bloom"] || {};
+    connPool[clientId] = connPool[clientId] || {};
+    connPool[clientId]["bloom"] = connPool[clientId]["bloom"] || {};
 
-    if (!(STORAGE[clientId]["bloom"][key] instanceof BloomFilter)) {
+    if (!(connPool[clientId]["bloom"][key] instanceof BloomFilter)) {
         return new AppError(Messages.Error.KEY_NOT_FOUND);
     }
 
-    const exists = STORAGE[clientId]["bloom"][key].exists(item);
+    const exists = connPool[clientId]["bloom"][key].mightContain(item);
     return new AppSuccess(exists);
 }
