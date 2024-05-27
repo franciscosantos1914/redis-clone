@@ -1,22 +1,22 @@
-import { Helper } from '../../shareds/helpers'
-import { STORAGE } from '../../storage/storage'
-import { Messages } from '../../shareds/messages'
-import { List } from '../../data-structures/list'
-import { AppError, AppSuccess } from '../../shareds/app-response'
+import { Helper } from '../../shareds/helpers.js'
+import { Messages } from '../../shareds/messages.js'
+import { List } from '../../data-structures/list.js'
+import { AppError, AppSuccess } from '../../shareds/app-response.js'
 
-export function pushListCommand(key, values, clientId) {
+// LPUSH key element [element ...]
+
+export function pushListCommand(key, values, clientId, connPool) {
     if (!Helper.isString(key) || String(key).trim().length === 0) {
         return new AppError(Messages.Error.INVALID_KEY);
     }
 
-    STORAGE[clientId] = STORAGE[clientId] || {};
-    STORAGE[clientId]["list"] = STORAGE[clientId]["list"] || {};
+    connPool[clientId] = connPool[clientId] || {};
+    connPool[clientId]["list"] = connPool[clientId]["list"] || {};
 
-    if (!(STORAGE[clientId]["list"][key] instanceof List)) {
-        STORAGE[clientId]["list"][key] = new List();
+    if (!(connPool[clientId]["list"][key] instanceof List)) {
+        connPool[clientId]["list"][key] = new List();
     }
 
-    STORAGE[clientId]["list"][key].push(...values);
-
+    connPool[clientId]["list"][key].push(...values);
     return new AppSuccess("ok");
 }

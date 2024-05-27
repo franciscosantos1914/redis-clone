@@ -1,10 +1,11 @@
-import { Helper } from '../../shareds/helpers'
-import { STORAGE } from '../../storage/storage'
-import { Messages } from '../../shareds/messages'
-import { List } from '../../data-structures/list'
-import { AppError, AppSuccess } from '../../shareds/app-response'
+import { Helper } from '../../shareds/helpers.js'
+import { Messages } from '../../shareds/messages.js'
+import { List } from '../../data-structures/list.js'
+import { AppError, AppSuccess } from '../../shareds/app-response.js'
 
-export function rangeListCommand(key, start, stop, clientId) {
+// LRANGE key start stop
+
+export function rangeListCommand(key, start, stop, clientId, connPool) {
     if (!Helper.isString(key) || String(key).trim().length === 0) {
         return new AppError(Messages.Error.INVALID_KEY);
     }
@@ -13,14 +14,13 @@ export function rangeListCommand(key, start, stop, clientId) {
         return new AppError(Messages.Error.INVALID_INDEX);
     }
 
-    STORAGE[clientId] = STORAGE[clientId] || {};
-    STORAGE[clientId]["list"] = STORAGE[clientId]["list"] || {};
+    connPool[clientId] = connPool[clientId] || {};
+    connPool[clientId]["list"] = connPool[clientId]["list"] || {};
 
-    if (!(STORAGE[clientId]["list"][key] instanceof List)) {
+    if (!(connPool[clientId]["list"][key] instanceof List)) {
         return new AppError(Messages.Error.KEY_NOT_FOUND);
     }
 
-    const rangeValues = STORAGE[clientId]["list"][key].range(start, stop);
-
+    const rangeValues = connPool[clientId]["list"][key].range(start, stop);
     return new AppSuccess(rangeValues);
 }

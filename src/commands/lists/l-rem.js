@@ -1,26 +1,22 @@
-import { Helper } from '../../shareds/helpers'
-import { STORAGE } from '../../storage/storage'
-import { Messages } from '../../shareds/messages'
-import { List } from '../../data-structures/list'
-import { AppError, AppSuccess } from '../../shareds/app-response'
+import { Helper } from '../../shareds/helpers.js'
+import { Messages } from '../../shareds/messages.js'
+import { List } from '../../data-structures/list.js'
+import { AppError, AppSuccess } from '../../shareds/app-response.js'
 
-export function remListCommand(key, count, value, clientId) {
+// LREM key element
+
+export function remListCommand(key, value, clientId, connPool) {
     if (!Helper.isString(key) || String(key).trim().length === 0) {
         return new AppError(Messages.Error.INVALID_KEY);
     }
 
-    if (!Helper.isNumber(count)) {
-        return new AppError(Messages.Error.INVALID_COUNT);
-    }
+    connPool[clientId] = connPool[clientId] || {};
+    connPool[clientId]["list"] = connPool[clientId]["list"] || {};
 
-    STORAGE[clientId] = STORAGE[clientId] || {};
-    STORAGE[clientId]["list"] = STORAGE[clientId]["list"] || {};
-
-    if (!(STORAGE[clientId]["list"][key] instanceof List)) {
+    if (!(connPool[clientId]["list"][key] instanceof List)) {
         return new AppError(Messages.Error.KEY_NOT_FOUND);
     }
 
-    const removedCount = STORAGE[clientId]["list"][key].remove(count, value);
-
+    const removedCount = connPool[clientId]["list"][key].remove(value);
     return new AppSuccess(removedCount);
 }

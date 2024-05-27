@@ -1,7 +1,9 @@
 import { AppSuccess } from '../../shareds/app-response.js'
 
-export function JSONClearCommand(clientId) {
-    STORAGE[clientId] = STORAGE[clientId] || {};
-    STORAGE[clientId]["json"] = {};
+// JSON.CLEAR
+
+export function JSONClearCommand(clientId, connPool) {
+    connPool[clientId] = connPool[clientId] || {};
+    connPool[clientId]["json"] = {}
     return new AppSuccess("ok");
 }

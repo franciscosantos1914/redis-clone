@@ -26,8 +26,20 @@ export class List {
         return this.#list
     }
 
+    pop() {
+        return this.#list.pop()
+    }
+
+    range(start, stop) {
+        return structuredClone(this.#list).slice(start, stop)
+    }
+
     setIndexAndValue(index, value) {
         this.#list[index] = value
+    }
+
+    index(index) {
+        return this.#list[index]
     }
 
     get size() {

@@ -1,9 +1,11 @@
 import { Helper } from '../../shareds/helpers.js'
 import { Messages } from '../../shareds/messages.js'
-import { HashTable } from '../data-structures/hash-table.js'
+import { HashTable } from '../../data-structures/hash-table.js'
 import { AppError, AppSuccess } from '../../shareds/app-response.js'
 
-export function JSONSetCommand(key, path, value, clientId) {
+// JSON.SET key path value
+
+export function JSONSetCommand(key, path, value, clientId, connPool) {
     if (Helper.isString(key) === false) {
         return new AppError(Messages.Error.INVALID_KEY)
     }
@@ -14,13 +16,13 @@ export function JSONSetCommand(key, path, value, clientId) {
         return new AppError(Messages.Error.INVALID_JSON_VALUE)
     }
 
-    STORAGE[clientId] = STORAGE[clientId] || {}
-    STORAGE[clientId]["json"] = STORAGE[clientId]["json"] || {}
+    connPool[clientId] = connPool[clientId] || {}
+    connPool[clientId]["json"] = connPool[clientId]["json"] || {}
 
-    if (!(STORAGE[clientId]["json"][key] instanceof HashTable)) {
-        STORAGE[clientId]["json"][key] = new HashTable()
+    if (!(connPool[clientId]["json"][key] instanceof HashTable)) {
+        connPool[clientId]["json"][key] = new HashTable()
     }
 
-    STORAGE[clientId]["json"][key].set(path, value)
+    connPool[clientId]["json"][key].set(path, value)
     return new AppSuccess("ok")
 }

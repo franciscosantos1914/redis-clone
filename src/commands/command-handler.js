@@ -14,6 +14,19 @@ import { hashKeysCommand } from './hashes/h-keys.js'
 import { hashStrlenCommand } from './hashes/h-strlen.js'
 import { hashValsCommand } from './hashes/h-vals.js'
 import { hashMgetCommand } from './hashes/hm-get.js'
+import { JSONClearCommand } from './json/json-clear.js'
+import { JSONDelCommand } from './json/json-del.js'
+import { JSONForgetCommand } from './json/json-forget.js'
+import { JSONGetCommand } from './json/json-get.js'
+import { JSONSetCommand } from './json/json-set.js'
+import { JSONStrlenCommand } from './json/json-strlen.js'
+import { indexListCommand } from './lists/l-index.js'
+import { lenListCommand } from './lists/l-len.js'
+import { popListCommand } from './lists/l-pop.js'
+import { pushListCommand } from './lists/l-push.js'
+import { rangeListCommand } from './lists/l-range.js'
+import { remListCommand } from './lists/l-rem.js'
+import { setListCommand } from './lists/l-set.js'
 
 const mapper = new Map()
 
@@ -31,6 +44,19 @@ mapper.set("CLIENT", (params) => {
     return argumentFunc()
 })
 
+mapper.set("LSET", (params) => setListCommand(params.args[0], params.args[1], params.args[2], params.socket["id"], params.connPool))
+mapper.set("LREM", (params) => remListCommand(params.args[0], params.args[1], params.socket["id"], params.connPool))
+mapper.set("LRANGE", (params) => rangeListCommand(params.args[0], params.args[1], params.args[2], params.socket["id"], params.connPool))
+mapper.set("LPUSH", (params) => pushListCommand(params.args[0], params.args.slice(1), params.socket["id"], params.connPool))
+mapper.set("LPOP", (params) => popListCommand(params.args[0], params.socket["id"], params.connPool))
+mapper.set("LLEN", (params) => lenListCommand(params.args[0], params.socket["id"], params.connPool))
+mapper.set("LINDEX", (params) => indexListCommand(params.args[0], params.args[1], params.socket["id"], params.connPool))
+mapper.set("JSON.STRLEN", (params) => JSONStrlenCommand(params.args[0], params.args[1], params.socket["id"], params.connPool))
+mapper.set("JSON.SET", (params) => JSONSetCommand(params.args[0], params.args[1], params.args[2], params.socket["id"], params.connPool))
+mapper.set("JSON.GET", (params) => JSONGetCommand(params.args[0], params.args[1], params.socket["id"], params.connPool))
+mapper.set("JSON.FORGET", (params) => JSONForgetCommand(params.args[0], params.socket["id"], params.connPool))
+mapper.set("JSON.DEL", (params) => JSONDelCommand(params.args[0], params.args[1], params.socket["id"], params.connPool))
+mapper.set("JSON.CLEAR", (params) => JSONClearCommand(params.args[0], params.socket["id"], params.connPool))
 mapper.set("HLEN", (params) => hashLenCommand(params.args[0], params.socket["id"], params.connPool))
 mapper.set("HVALS", (params) => hashValsCommand(params.args[0], params.socket["id"], params.connPool))
 mapper.set("HKEYS", (params) => hashKeysCommand(params.args[0], params.socket["id"], params.connPool))
