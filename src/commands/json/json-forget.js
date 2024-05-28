@@ -1,6 +1,6 @@
 import { Helper } from '../../shareds/helpers.js'
 import { Messages } from '../../shareds/messages.js'
-import { HashTable } from '../data-structures/hash-table.js'
+import { HashTable } from '../../data-structures/hash-table.js'
 import { AppError, AppSuccess } from '../../shareds/app-response.js'
 
 // JSON.FORGET key

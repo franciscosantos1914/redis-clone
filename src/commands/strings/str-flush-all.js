@@ -1,14 +1,13 @@
-import { STORAGE } from '../../storage/storage'
-import { AppSuccess } from '../../shareds/app-response'
+import { AppSuccess } from '../../shareds/app-response.js'
 
-export function flushAll(clientId) {
+// FLUSHALL
+
+export function flushAll(clientId, connPool) {
     let counter = 0
-    const keys = Reflect.ownKeys(STORAGE[clientId]["dictionary"])
-
+    const keys = Reflect.ownKeys(connPool[clientId]["dictionary"])
     if (keys.length > 0) {
-        STORAGE[clientId]["dictionary"] = {}
+        connPool[clientId]["dictionary"] = {}
         counter = keys.length
-
     }
     return new AppSuccess(counter)
 }

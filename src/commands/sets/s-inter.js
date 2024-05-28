@@ -1,26 +1,26 @@
-import { Helper } from '../../shareds/helpers'
-import { STORAGE } from '../../storage/storage'
-import { Messages } from '../../shareds/messages'
-import { CustomSet } from '../../data-structures/custom-set'
-import { AppError, AppSuccess } from '../../shareds/app-response'
+import { Helper } from '../../shareds/helpers.js'
+import { Messages } from '../../shareds/messages.js'
+import { CustomSet } from '../../data-structures/custom-set.js'
+import { AppError, AppSuccess } from '../../shareds/app-response.js'
 
-export function interSetCommand(destination, clientId, ...keys) {
+// SINTER key [key ...]
+
+export function interSetCommand(destination, clientId, connPool, ...keys) {
     if (!Helper.isString(destination) || String(destination).trim().length === 0) {
         return new AppError(Messages.Error.INVALID_KEY)
     }
 
-    const sets = keys.map(key => STORAGE[clientId]?.set[key])
+    const sets = keys.map(key => connPool[clientId]?.set[key])
 
     if (sets.some(set => !(set instanceof CustomSet))) {
         return new AppError(Messages.Error.KEY_NOT_FOUND)
     }
 
     const customSet = new CustomSet()
-    const destinationSet = STORAGE[clientId]?.set[destination] || new CustomSet()
+    const destinationSet = connPool[clientId]?.set[destination] || new CustomSet()
 
     for (const key of keys) {
-        const sourceSet = STORAGE[clientId]?.set[key]
-
+        const sourceSet = connPool[clientId]?.set[key]
         if (sourceSet instanceof CustomSet) {
             sourceSet.forEach(value => {
                 if (destinationSet.has(value)) {

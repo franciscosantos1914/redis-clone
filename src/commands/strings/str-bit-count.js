@@ -1,13 +1,14 @@
 import { Helper } from '../../shareds/helpers.js'
-import { STORAGE } from '../../storage/storage.js'
 import { Messages } from '../../shareds/messages.js'
 import { AppError, AppSuccess } from '../../shareds/app-response.js'
 
-export async function strBitCount(clientId, key) {
+// BITCOUNT key
+
+export async function strBitCount(key, clientId, connPool) {
     if (!Helper.isString(key) || String(key).trim().length === 0) {
         return new AppError(Messages.Error.INVALID_KEY)
     }
-    const value = STORAGE[clientId]?.dictionary[key] || ''
+    const value = connPool[clientId]?.dictionary[key] || ''
 
     const textEncoder = new TextEncoderStream()
     const writer = textEncoder.writable.getWriter()
@@ -26,12 +27,10 @@ export async function strBitCount(clientId, key) {
         , Uint32Array
         , Uint8ClampedArray
     ]
-
     if (typedArrayConstructors.some(constructor => uint8Array instanceof constructor)) {
         for (const int of uint8Array) {
             bits += Number(int).toString(2)
         }
     }
-
     return new AppSuccess(bits.length)
 }

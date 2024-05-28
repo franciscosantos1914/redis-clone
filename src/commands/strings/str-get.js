@@ -1,11 +1,12 @@
-import { Helper } from '../../shareds/helpers'
-import { STORAGE } from '../../storage/storage'
-import { Messages } from '../../shareds/messages'
-import { AppError, AppSuccess } from '../../shareds/app-response'
+import { Helper } from '../../shareds/helpers.js'
+import { Messages } from '../../shareds/messages.js'
+import { AppError, AppSuccess } from '../../shareds/app-response.js'
 
-export function getCommand(key, clientId) {
+// GET key
+
+export function getCommand(key, clientId, connPool) {
     if (!Helper.isString(key) || String(key).trim().length === 0) {
         return new AppError(Messages.Error.INVALID_KEY)
     }
-    return new AppSuccess(STORAGE[clientId]?.dictionary[key])
+    return new AppSuccess(connPool[clientId]?.dictionary[key])
 }

@@ -1,14 +1,13 @@
-import { STORAGE } from '../../storage/storage'
-import { AppSuccess } from '../../shareds/app-response'
+import { AppSuccess } from '../../shareds/app-response.js'
 
-export function deleteCommand(clientId, ...keys) {
+// DEL key [key ...]
+
+export function deleteCommand(clientId, connPool, ...keys) {
     let counter = 0
     const filteredKeys = keys.filter(k => typeof k === "string" && String(k).trim().length > 0)
-
     for (const key of filteredKeys) {
-        if (!STORAGE[clientId]?.dictionary[key]) continue
-        if (Reflect.deleteProperty(STORAGE[clientId].dictionary, key)) counter++
+        if (!connPool[clientId]?.dictionary[key]) continue
+        if (Reflect.deleteProperty(connPool[clientId].dictionary, key)) counter++
     }
-
     return new AppSuccess(counter)
 }

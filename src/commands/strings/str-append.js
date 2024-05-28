@@ -1,9 +1,10 @@
-import { Helper } from '../../shareds/helpers'
-import { STORAGE } from '../../storage/storage'
-import { Messages } from '../../shareds/messages'
-import { AppError, AppSuccess } from '../../shareds/app-response'
+import { Helper } from '../../shareds/helpers.js'
+import { Messages } from '../../shareds/messages.js'
+import { AppError, AppSuccess } from '../../shareds/app-response.js'
 
-export function appendCommand(key, value, clientId) {
+// APPEND key value
+
+export function appendCommand(key, value, clientId, connPool) {
     if (!Helper.isString(key) || String(key).trim().length === 0) {
         return new AppError(Messages.Error.INVALID_KEY)
     }
@@ -11,13 +12,13 @@ export function appendCommand(key, value, clientId) {
         return new AppError(Messages.Error.INVALID_VALUE)
     }
 
-    STORAGE[clientId] = STORAGE[clientId] || {}
-    STORAGE[clientId]["dictionary"] = STORAGE[clientId]["dictionary"] || {}
-    STORAGE[clientId]["dictionary"][key] = STORAGE[clientId]["dictionary"][key] || ''
+    connPool[clientId] = connPool[clientId] || {}
+    connPool[clientId]["dictionary"] = connPool[clientId]["dictionary"] || {}
+    connPool[clientId]["dictionary"][key] = connPool[clientId]["dictionary"][key] || ''
 
-    const recorded = STORAGE[clientId]["dictionary"][key]
+    const recorded = connPool[clientId]["dictionary"][key]
     const data = `${recorded}${value}`
-    STORAGE[clientId]["dictionary"][key] = data
+    connPool[clientId]["dictionary"][key] = data
 
     return new AppSuccess(data.length)
 }
