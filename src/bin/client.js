@@ -14,7 +14,6 @@ function prompt() {
         buffer.writeUInt8(0xff, 0)
         buffer.write(stdoutStr, 1)
         socket.write(buffer)
-        prompt()
     }
 }
 
@@ -23,10 +22,9 @@ function handleServerResponse(packet) {
     packetHeader.toString(16)
     const packetBody = packet.slice(1).toString()
 
-    clear()
-
     switch (packetHeader) {
         case 0xfe:
+            clear()
             drawMessage()
             break;
         case 0xff:
@@ -56,10 +54,6 @@ socket
     .on("data", data => {
         handleServerResponse(data)
         prompt()
-    })
-    .on("end", () => {
-        prompt().close()
-        clear()
     })
     .on("error", (err) => {
         log("Error while connecting to the server. Maybe server is down!")

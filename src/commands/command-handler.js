@@ -1,4 +1,5 @@
 import commandMapper from './commands.js'
+import { AppError } from '../shareds/app-response.js'
 
 export function commandHandler(command, socket, connPool) {
     if (typeof command !== "string") {
