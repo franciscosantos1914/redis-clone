@@ -13,7 +13,7 @@ function date() {
 }
 
 function bufferizeMsg(type, msg) {
-    const msgStr = JSON.stringify(msg)
+    const msgStr = JSON.stringify(msg || '')
     const buffer = Buffer.alloc(1 + msgStr.length)
     buffer.writeUint8(type, 0)
     buffer.write(msgStr, 1)

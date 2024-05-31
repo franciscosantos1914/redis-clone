@@ -1,5 +1,6 @@
 import { Helper } from '../../shareds/helpers.js'
 import { Messages } from '../../shareds/messages.js'
+import { writeRDB } from '../../storage/persistence/handle-rdb.js'
 import { AppError, AppSuccess } from '../../shareds/app-response.js'
 
 // SET key value
@@ -29,6 +30,8 @@ export function setCommand(key, value, clientId, connPool, ttl = Infinity) {
     if (ttl != Infinity) {
         setTimeout(() => rmKey(key, clientId, connPool), ttl)
     }
+
+    writeRDB("dictionary", { key, value, clientId, connPool, ttl })
 
     return new AppSuccess("ok")
 }

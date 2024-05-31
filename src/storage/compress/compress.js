@@ -9,6 +9,5 @@ export async function compress(buffer) {
     if (Buffer.isBuffer(buffer) === false && !(buffer instanceof ArrayBuffer)) {
         return new AppError(Messages.Error.INVALID_BUFFER)
     }
-
     return new AppSuccess(await promisify(deflate)(buffer))
 }
